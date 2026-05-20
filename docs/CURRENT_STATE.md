@@ -14,9 +14,11 @@ material things change.
 
 **Pushed to:** `picnc6uy/spec_agents` (private GitHub).
 
-**Tests:** 11 passing in ~0.2s · ruff + ruff-format clean.
+**Tests:** 16 passing in ~0.4s · ruff + ruff-format clean.
 Surface coverage: imports, Adapter ABC contract enforcement, LensLoader
-header-anchored extraction, AgentMessage falsifiability invariant.
+header-anchored extraction, AgentMessage falsifiability invariant,
+`spec_agents.testing.db` (in-memory SQLite + schema_init hooks) per
+XR-009.
 
 **Pre-commit:** `ruff` (with `--fix`) · `ruff-format` · pre-commit-hooks
 (trailing-whitespace, end-of-file-fixer, check-yaml, check-toml,
@@ -54,7 +56,6 @@ their documented contracts in the smoke-test suite.
 
 - **CI** — XR-008 will add the canonical workflow (will include pyright
   strict, currently only enforced via local `pyright .`).
-- **`spec_agents.testing` shared fixture module** — XR-009.
 - **`spec_agents.agents.critic`, `.verifiers`, plan-then-act helper** —
   SA-002 / SA-003 / SA-004 (queued behind foundation pass).
 - **Tag + git-URL pin** — XR-005, gated on D-5.
