@@ -14,6 +14,14 @@ this surface — the kernel here stays sync + sequential so the contract
 is testable without network or batch infrastructure.
 """
 
+from spec_agents.eval.batch import (
+    BatchResult,
+    build_invoker,
+    fetch_results,
+    get_batch_status,
+    submit_batch,
+    wait_for_batch,
+)
 from spec_agents.eval.runner import (
     EvalResult,
     EvalRun,
@@ -24,10 +32,16 @@ from spec_agents.eval.runner import (
 )
 
 __all__ = [
+    "BatchResult",
     "EvalResult",
     "EvalRun",
     "Invoker",
     "Scorer",
     "aggregate_numeric",
+    "build_invoker",
+    "fetch_results",
+    "get_batch_status",
     "run_eval",
+    "submit_batch",
+    "wait_for_batch",
 ]

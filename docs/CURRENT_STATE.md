@@ -8,24 +8,26 @@ material things change.
 
 ## As of 2026-05-20
 
-**Master commit:** SA-003 verifier helpers (see latest commit message).
+**Master commit:** XR-011 Batch-API wrapper (see latest commit message).
 
-**Tag:** `v0.4.0` (2026-05-20, SA-003 ships verifier helpers — third
-methodology-band primitive: pure-function checks that cost zero tokens).
+**Tag:** `v0.5.0` (2026-05-20, XR-011 wraps Anthropic's Batch API around
+the XR-010 eval harness — 50% discount, async fanout for hundreds of
+historical-run replays without changing the Scorer contract).
 Consumers pin via
-`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.4.0`.
+`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.5.0`.
 Bump version on any further public-surface change.
 
 **Pushed to:** `picnc6uy/spec_agents` (private GitHub).
 
-**Tests:** 47 passing in ~1.3s · ruff + ruff-format clean.
+**Tests:** 57 passing in ~1.3s · ruff + ruff-format clean.
 Surface coverage: imports, Adapter ABC contract enforcement, LensLoader
 header-anchored extraction, AgentMessage falsifiability invariant,
 `spec_agents.testing.db` (XR-009), `spec_agents.agents.critic.critique`
 (SA-002), `spec_agents.eval.run_eval` + `aggregate_numeric` (XR-010),
-and `spec_agents.agents.verifiers.verify` + `verify_schema` +
-`verify_evidence` (severity ranking, rule-crash containment, business-
-rule + citation-resolution scenarios) per SA-003.
+`spec_agents.agents.verifiers` (SA-003), and
+`spec_agents.eval.batch.submit_batch` + `wait_for_batch` +
+`fetch_results` + `build_invoker` (round-trip through `run_eval` with
+stubbed SDK; missing-result + errored-result paths) per XR-011.
 
 **Pre-commit:** `ruff` (with `--fix`) · `ruff-format` · pre-commit-hooks
 (trailing-whitespace, end-of-file-fixer, check-yaml, check-toml,
@@ -60,6 +62,9 @@ standards expected of consumers and is mirrored into `spectacular` and
 - **Verifier helpers** (`spec_agents.agents.verifiers`: `verify`,
   `verify_schema`, `verify_evidence`, `VerifierIssue`,
   `VerificationResult`, `Verifier`) — SA-003
+- **Batch-API wrapper** (`spec_agents.eval.batch`: `submit_batch`,
+  `get_batch_status`, `wait_for_batch`, `fetch_results`, `build_invoker`,
+  `BatchResult`) — XR-011
 
 Consumers pin via the git-URL pattern in their `pyproject.toml`
 (XR-005). For local dev, override with `pip install -e ../spec_agents`.
@@ -77,24 +82,20 @@ regression suite).
 - **`spec_agents.agents.plan_then_act`** — SA-004 (two-call orchestration
   for structured decisions). Queued; awaits a real consumer (photo_archive
   match decisions per the brief).
-- **Batch API integration in eval** — XR-011 (50% discount, overnight
-  turnaround on 100s of historical runs). Gated on XR-010 having a real
-  consumer; the kernel's `Invoker` callable already accepts any shape, so
-  XR-011 wraps without changing the surface.
 - **`spec_agents.consolidation`** — runtime "dream" / memory consolidation
   primitive named in the v2 charter. Waits for Brier baseline + critic.
 
 ## Active Sprint
 
 ⬜ Foundation pass closed (XR-001/3/5/6/8/9, SA-001, POS-001). Methodology
-band in progress: **SA-002 shipped 2026-05-20** (critic primitive,
-v0.2.0); **XR-010 shipped 2026-05-20** (eval harness, v0.3.0); **SA-003
-shipped 2026-05-20** (verifier helpers, v0.4.0). Three matched
-library-mode primitives, all consumed via plain Python callables — the
-v2 charter's library-mode commitment in working form.
-Next-3 in execution order: **SR-006** (few-shot upgrade — cheap,
-parallelizable; consumer-only, no kernel work), **XR-011** (Batch API
-integration), **SA-004** (plan-then-act).
+band has four shipped primitives so far: SA-002 (critic, v0.2.0), XR-010
+(eval harness, v0.3.0), SA-003 (verifiers, v0.4.0), **XR-011** (batch
+wrapper, v0.5.0). Library-mode posture proven across critic call,
+harness loop, zero-token checks, and async fanout.
+Next-3 in execution order: **SA-004** (plan-then-act primitive — last
+kernel slot in the SA-* lane), **POS-003** (personal_os summary critic —
+first SA-002 consumer outside spectacular), **SR-006** (few-shot lens
+upgrade — needs operator-curated run_ids; deferred until then).
 
 ## Known Issues / Cleanup Items
 
