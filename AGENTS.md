@@ -1,4 +1,4 @@
-# CLAUDE.md — spec_agents
+# AGENTS.md — spec_agents
 
 > **Fresh session?** Start at [../planning/HANDOVER.md](../planning/HANDOVER.md) for the
 > canonical session-start brief, then cross-reference architectural posture in
@@ -12,9 +12,6 @@
 > against the docs you're about to trust or just touched. Fix drift first; don't
 > work over stale context.
 >
-> **Note (2026-05-20):** XR-006 signed — `AGENTS.md` is canonical going forward.
-> This file remains active until XR-006 execution replaces it with a one-line
-> pointer to `AGENTS.md`.
 
 ---
 
