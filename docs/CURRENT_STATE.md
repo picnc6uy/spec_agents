@@ -8,19 +8,21 @@ material things change.
 
 ## As of 2026-05-20
 
-**Master commit:** SA-001 pass (see latest commit message).
+**Master commit:** SA-002 critic primitive (see latest commit message).
 
-**Tag:** `v0.1.0` (2026-05-20, D-5 signed; XR-005 closed). Consumers
-pin via `spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.1.0`
-in their pyproject.toml.
+**Tag:** `v0.2.0` (2026-05-20, SA-002 ships the critic primitive — first
+public-surface addition since the v0.1.0 cut). Consumers pin via
+`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.2.0`.
+Bump version on any further public-surface change.
 
 **Pushed to:** `picnc6uy/spec_agents` (private GitHub).
 
-**Tests:** 16 passing in ~0.4s · ruff + ruff-format clean.
+**Tests:** 23 passing in ~1.3s · ruff + ruff-format clean.
 Surface coverage: imports, Adapter ABC contract enforcement, LensLoader
 header-anchored extraction, AgentMessage falsifiability invariant,
 `spec_agents.testing.db` (in-memory SQLite + schema_init hooks) per
-XR-009.
+XR-009, and `spec_agents.agents.critic.critique` (forced-tool-use,
+lens caching, error paths) per SA-002.
 
 **Pre-commit:** `ruff` (with `--fix`) · `ruff-format` · pre-commit-hooks
 (trailing-whitespace, end-of-file-fixer, check-yaml, check-toml,
@@ -28,69 +30,85 @@ check-merge-conflict, large-files, private-key) · `detect-secrets`
 v1.5.0 with seeded `.secrets.baseline`. Pyright runs in CI (XR-008),
 not in the hook.
 
+**CI:** canonical workflow per XR-008 (Python 3.12; pip install -e
+`.[dev]` + pinned ruff/pyright/detect-secrets; ruff check + format;
+pyright strict; detect-secrets-hook against baseline; pytest).
+
 **Conventions:** [docs/CONVENTIONS.md](CONVENTIONS.md) declares the
-standards expected of consumers (Python ≥3.12, ruff/pyright config,
-Pydantic v2, SQLAlchemy 2.0+, structlog, Adapter pattern, lens pattern,
-no live calls in unit tests, secrets via `.env`).
+standards expected of consumers and is mirrored into `spectacular` and
+`personal_os` (XR-006 executed 2026-05-20).
 
 ---
 
 ## Public surface — do not break
 
 - **Adapter ABC** (`spec_agents.ingestion.adapters.base.Adapter`)
-- **Knowledge layer** (`spec_agents.agents.knowledge.lenses`, `.memory`)
+- **Knowledge layer** (`spec_agents.knowledge.lenses`: `Lens`,
+  `LensSection`, `LensLoader`)
 - **DB helpers** (`spec_agents.storage`)
-- **Structured logging** (`spec_agents.logging.setup`)
-- **Pydantic message types** (`spec_agents.messages`)
+- **Structured logging** (`spec_agents.logging`)
+- **Pydantic message types** (`spec_agents.messages`: `AgentMessage`,
+  `EnsembleResult`, `EvidenceItem`, `Direction`)
+- **In-memory test fixture** (`spec_agents.testing.db`:
+  `in_memory_engine`, `in_memory_session`) — XR-009
+- **Critic primitive** (`spec_agents.agents.critic.critique`) — SA-002
 
-Consumers install editable from a sibling clone
-(`pip install -e ../spec_agents`) until v0.1.0 is tagged and a git-URL
-pin replaces the editable install in `spectacular` and `personal_os`
-pyproject.toml (XR-005, gated on D-5).
+Consumers pin via the git-URL pattern in their `pyproject.toml`
+(XR-005). For local dev, override with `pip install -e ../spec_agents`.
 
 ## What Works End-to-End
 
-Public surface imports cleanly; the four covered primitives
-(Adapter ABC, LensLoader, AgentMessage, RawMetricIn) round-trip through
-their documented contracts in the smoke-test suite.
+Public surface imports cleanly; every covered primitive round-trips
+through its documented contract in the smoke-test suite. The critic
+primitive specifically is exercised against a stub Anthropic client —
+live-API behavior is owned by consumers (spectacular's brief_critic
+regression suite).
 
 ## What's Stubbed / Deferred
 
-- **CI** — XR-008 will add the canonical workflow (will include pyright
-  strict, currently only enforced via local `pyright .`).
-- **`spec_agents.agents.critic`, `.verifiers`, plan-then-act helper** —
-  SA-002 / SA-003 / SA-004 (queued behind foundation pass).
-- **Tag + git-URL pin** — XR-005, gated on D-5.
+- **`spec_agents.agents.verifiers`** — SA-003 (schema + evidence verifiers
+  that catch errors without spending tokens). Queued.
+- **`spec_agents.agents.plan_then_act`** — SA-004 (two-call orchestration
+  for structured decisions). Queued; awaits a real consumer (photo_archive
+  match decisions per the brief).
+- **`spec_agents.consolidation`** — runtime "dream" / memory consolidation
+  primitive named in the v2 charter. Waits for Brier baseline + critic.
 
 ## Active Sprint
 
-⬜ Foundation pass per `planning/SYSTEM.md` 2026-05-20 reframe.
-SA-001 shipped 2026-05-20. Next task in execution order: **XR-005**
-(tag v0.1.0 + pin via git URL), gated on operator sign-off of D-5.
+⬜ Foundation pass per `planning/SYSTEM.md` 2026-05-20 reframe is now
+mostly closed. SA-002 (this) ships the first methodology-band primitive.
+Next-3 candidates: T-009 stop using SR-009 (premise invalid — see
+SYSTEM.md note), then **XR-010** (eval harness, gating for everything
+else in the methodology band), then **SA-003** verifiers.
 
 ## Known Issues / Cleanup Items
 
-- No `pyproject.toml` polish beyond the initial extraction.
-- No CI yet — XR-008.
-- `agent-task` workflow contracts live in `planning/agent-task/`, not yet
-  mirrored into this repo's docs.
+- `agent-task` workflow contracts live in `planning/agent-task/`, not
+  mirrored into this repo's docs. Considered acceptable: that workflow
+  is cross-repo, not spec_agents-specific.
 
 ## How To Resume Work
 
 1. `cd c:/Users/ghendrick/spec_agents`
 2. Read this file (you just did)
-3. Read `planning/SYSTEM.md` §11 for SA-001 / XR-005 scope
-4. Confirm: `git log --oneline -3` matches the master commit above
-5. Confirm: `git status` is clean
-6. Ask the operator which task to work on
+3. Read `AGENTS.md` for the session-start protocol
+4. Drift check: `git log --oneline -1` should match the master commit
+   line above; if not, fix this file first
+5. `python -m pytest -q` should show 23 passing
+6. Read `planning/SYSTEM.md` §11 for SA-* and XR-010 scope
+7. `git status` should be clean
+8. Ask the operator which task to work on
 
 ## How To Update This File
 
 Edit it when:
 
-- A task ships that changes commit / tests / surface
-- A new public symbol is added or removed
+- A task ships that changes commit / tests / public surface
+- A new public symbol is added or removed (also: bump version, tag,
+  update consumer pins)
 - A new known issue is discovered or resolved
 
-Commit the update with the change that caused it. Never let this file
-drift from reality — its whole job is to be accurate at-a-glance.
+Commit the update with the change that caused it. The drift-audit lens
+(`planning/agent-task/agent-templates/lenses/drift-audit.md`) catches
+divergence at session start and task close.
