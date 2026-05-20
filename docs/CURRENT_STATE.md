@@ -8,23 +8,24 @@ material things change.
 
 ## As of 2026-05-20
 
-**Master commit:** XR-010 eval harness (see latest commit message).
+**Master commit:** SA-003 verifier helpers (see latest commit message).
 
-**Tag:** `v0.3.0` (2026-05-20, XR-010 ships the eval-harness runner —
-second methodology-band primitive after SA-002). Consumers pin via
-`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.3.0`.
+**Tag:** `v0.4.0` (2026-05-20, SA-003 ships verifier helpers — third
+methodology-band primitive: pure-function checks that cost zero tokens).
+Consumers pin via
+`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.4.0`.
 Bump version on any further public-surface change.
 
 **Pushed to:** `picnc6uy/spec_agents` (private GitHub).
 
-**Tests:** 33 passing in ~1.3s · ruff + ruff-format clean.
+**Tests:** 47 passing in ~1.3s · ruff + ruff-format clean.
 Surface coverage: imports, Adapter ABC contract enforcement, LensLoader
 header-anchored extraction, AgentMessage falsifiability invariant,
-`spec_agents.testing.db` (in-memory SQLite + schema_init hooks) per
-XR-009, `spec_agents.agents.critic.critique` (forced-tool-use, lens
-caching, error paths) per SA-002, and `spec_agents.eval.run_eval` +
-`aggregate_numeric` (loop, skip-or-propagate error semantics, numeric
-aggregation, non-numeric filtering) per XR-010.
+`spec_agents.testing.db` (XR-009), `spec_agents.agents.critic.critique`
+(SA-002), `spec_agents.eval.run_eval` + `aggregate_numeric` (XR-010),
+and `spec_agents.agents.verifiers.verify` + `verify_schema` +
+`verify_evidence` (severity ranking, rule-crash containment, business-
+rule + citation-resolution scenarios) per SA-003.
 
 **Pre-commit:** `ruff` (with `--fix`) · `ruff-format` · pre-commit-hooks
 (trailing-whitespace, end-of-file-fixer, check-yaml, check-toml,
@@ -56,6 +57,9 @@ standards expected of consumers and is mirrored into `spectacular` and
 - **Critic primitive** (`spec_agents.agents.critic.critique`) — SA-002
 - **Eval harness** (`spec_agents.eval`: `run_eval`, `aggregate_numeric`,
   `EvalRun`, `EvalResult`, `Invoker`, `Scorer`) — XR-010
+- **Verifier helpers** (`spec_agents.agents.verifiers`: `verify`,
+  `verify_schema`, `verify_evidence`, `VerifierIssue`,
+  `VerificationResult`, `Verifier`) — SA-003
 
 Consumers pin via the git-URL pattern in their `pyproject.toml`
 (XR-005). For local dev, override with `pip install -e ../spec_agents`.
@@ -70,9 +74,6 @@ regression suite).
 
 ## What's Stubbed / Deferred
 
-- **`spec_agents.agents.verifiers`** — SA-003 (schema + evidence verifiers
-  that catch errors without spending tokens). Next after XR-010 in the
-  execution order.
 - **`spec_agents.agents.plan_then_act`** — SA-004 (two-call orchestration
   for structured decisions). Queued; awaits a real consumer (photo_archive
   match decisions per the brief).
@@ -87,10 +88,13 @@ regression suite).
 
 ⬜ Foundation pass closed (XR-001/3/5/6/8/9, SA-001, POS-001). Methodology
 band in progress: **SA-002 shipped 2026-05-20** (critic primitive,
-v0.2.0); **XR-010 shipped 2026-05-20** (eval harness, v0.3.0).
+v0.2.0); **XR-010 shipped 2026-05-20** (eval harness, v0.3.0); **SA-003
+shipped 2026-05-20** (verifier helpers, v0.4.0). Three matched
+library-mode primitives, all consumed via plain Python callables — the
+v2 charter's library-mode commitment in working form.
 Next-3 in execution order: **SR-006** (few-shot upgrade — cheap,
-parallelizable; consumer-only, no kernel work), **SA-003** (verifiers
-kernel primitive), **XR-011** (Batch API integration in the eval rig).
+parallelizable; consumer-only, no kernel work), **XR-011** (Batch API
+integration), **SA-004** (plan-then-act).
 
 ## Known Issues / Cleanup Items
 

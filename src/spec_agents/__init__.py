@@ -16,4 +16,4 @@ Submodules:
   testing              - Test fixtures (in-memory SQLite helper, XR-009)
 """
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
