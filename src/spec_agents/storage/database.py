@@ -20,13 +20,14 @@ from contextlib import contextmanager
 from typing import TYPE_CHECKING
 
 from sqlalchemy import create_engine, event
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
 if TYPE_CHECKING:
     from sqlalchemy import MetaData
 
-_engine: object = None
-_SessionFactory: object = None
+_engine: Engine | None = None
+_SessionFactory: sessionmaker[Session] | None = None
 
 
 def init_db(database_url: str, metadata: "MetaData | None" = None) -> None:
