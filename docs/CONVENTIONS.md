@@ -17,10 +17,12 @@ operational implications.
 run it at session start and task close. The verification template now
 requires a drift check before declaring a task ready-to-merge.
 
-XR-006 signed 2026-05-20: `AGENTS.md` is canonical across the stack;
-`CLAUDE.md` becomes a one-line pointer when XR-006 executes. Until then,
-both files remain active per repo. This `CONVENTIONS.md` is mirrored
-into `spectacular` and `personal_os` as part of XR-006 execution.
+XR-006 executed 2026-05-20: `AGENTS.md` is the canonical session-start
+doc per repo; `CLAUDE.md` is a one-line pointer stub. This
+`CONVENTIONS.md` is mirrored into `spectacular` and `personal_os`
+verbatim except for the "public surface" relative path. When updating,
+update all three copies in the same commit. The drift-audit lens flags
+divergence.
 
 ---
 
@@ -57,9 +59,9 @@ Pyright is intentionally **not** in the hook by default — it lives in CI
 
 ## Public surface (what consumers depend on)
 
-Documented in [CLAUDE.md](../CLAUDE.md). Do not break the listed symbols
-without a version bump and coordination with consumers. Pinned in
-[CURRENT_STATE.md](CURRENT_STATE.md).
+Documented in [`spec_agents/AGENTS.md`](../AGENTS.md). Do not break the
+listed symbols without a version bump and coordination with consumers.
+Pinned in [`spec_agents/docs/CURRENT_STATE.md`](CURRENT_STATE.md).
 
 ## Message and data contracts
 
