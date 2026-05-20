@@ -33,10 +33,11 @@ Typical usage (consumer side):
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 import anthropic
 import structlog
+from anthropic.types import ToolUseBlock
 
 log = structlog.get_logger()
 
@@ -122,11 +123,15 @@ def critique(
         return None
 
     for block in response.content:
+        # Duck-typed check (works with the SDK's discriminated-union content
+        # blocks *and* with simple test stubs). pyright is told via cast that
+        # this branch is a ToolUseBlock.
         if (
             getattr(block, "type", None) == "tool_use"
             and getattr(block, "name", None) == verdict_tool_name
         ):
-            return dict(block.input)  # pyright: ignore[reportAttributeAccessIssue]
+            tool_block = cast(ToolUseBlock, block)
+            return dict(tool_block.input)  # pyright: ignore[arg-type]
 
     log.warning("critic.no_tool_call", model=model, verdict_tool_name=verdict_tool_name)
     return None
