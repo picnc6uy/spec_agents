@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install package + dev extras
+        # Consumers install spec-agents from the git URL pinned in their
+        # pyproject.toml (XR-005). The kernel itself installs editable
+        # from source.
+        run: pip install -e ".[dev]" pyright detect-secrets
+
+      - name: Lint (ruff)
+        run: |
+          ruff check .
+          ruff format --check .
+
+      - name: Type-check (pyright strict)
+        run: pyright
+
+      - name: Detect secrets (XR-001)
+        run: |
+          # Compare current scan against the committed baseline; exit non-zero
+          # if any tracked file has a new high-entropy secret not in the baseline.
+          git ls-files -z | xargs -0 detect-secrets-hook --baseline .secrets.baseline
+
+      - name: Tests
+        run: pytest -q
