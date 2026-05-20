@@ -7,6 +7,7 @@ can build on.
 Submodules:
   agents               - Agent-side primitives: critic (SA-002), verifiers
                          (SA-003 queued), plan-then-act (SA-004 queued)
+  eval                 - Eval-harness runner (XR-010)
   ingestion.adapters   - Adapter ABC, scheduler primitives
   knowledge            - Lens + memory layer for LLM context
   logging              - Structured logging setup
@@ -15,4 +16,4 @@ Submodules:
   testing              - Test fixtures (in-memory SQLite helper, XR-009)
 """
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
