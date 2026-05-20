@@ -2,12 +2,20 @@
 
 What `spec_agents` expects of itself and of its consumers. These are the
 defaults across the canonical stack (`spec_agents`, `spectacular`,
-`personal_os`, `photo_archive`). Deviations should be justified per-repo,
-not adopted casually.
+`personal_os`, `photo_archive`, planned `dictionary`). Deviations should
+be justified per-repo, not adopted casually.
 
-This file is the spec_agents-side companion to whatever ends up canonical
-across the stack via XR-006. Until that lands, treat this file as the
-authority for consumers integrating against `spec_agents`.
+**Authoritative architectural posture** lives in
+[../../planning/v2 architecture/v2 architecture - Unknown.md](../../planning/v2%20architecture/v2%20architecture%20-%20Unknown.md)
+(the v2 charter, committed 2026-05-20): library mode for `spec_agents`,
+propagation tiers (Skill → MCP → Plugin → Sibling app), the five planes
+vocabulary, the two-altitude discipline. This file encodes the
+operational implications.
+
+XR-006 signed 2026-05-20: `AGENTS.md` is canonical across the stack;
+`CLAUDE.md` becomes a one-line pointer when XR-006 executes. Until then,
+both files remain active per repo. This `CONVENTIONS.md` is mirrored
+into `spectacular` and `personal_os` as part of XR-006 execution.
 
 ---
 

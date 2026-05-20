@@ -1,9 +1,15 @@
 # CLAUDE.md — spec_agents
 
 > **Fresh session?** Start at [../planning/HANDOVER.md](../planning/HANDOVER.md) for the
-> canonical session-start brief: project map, cross-repo state, the `agent-task`
-> workflow, and operating principles. **Then** read this file and follow the
-> session-start protocol below for spec_agents-specific context.
+> canonical session-start brief, then cross-reference architectural posture in
+> [../planning/v2 architecture/v2 architecture - Unknown.md](../planning/v2%20architecture/v2%20architecture%20-%20Unknown.md)
+> (the v2 charter — committed design rules, propagation tiers, library mode).
+> **Then** read this file and follow the session-start protocol below for
+> spec_agents-specific context.
+>
+> **Note (2026-05-20):** XR-006 signed — `AGENTS.md` is canonical going forward.
+> This file remains active until XR-006 execution replaces it with a one-line
+> pointer to `AGENTS.md`.
 
 ---
 
@@ -26,7 +32,12 @@ If you find drift between CURRENT_STATE.md and reality, **fix the doc first** be
 
 `spec_agents` is the foundation library extracted from `spectacular` on 2026-05-12.
 Domain-agnostic agent + adapter primitives consumed by `spectacular`, `personal_os`,
-and (eventually) `photo_archive`.
+and (eventually) `photo_archive` + `dictionary`.
+
+**Library mode is committed** (v2 charter, 2026-05-20). The kernel does not
+autonomously orchestrate — primitives are functions agents call. Don't propose
+framework-mode shapes for SA-002 / SA-003 / SA-004 without operator-initiated
+reopening of the posture question.
 
 ## Current state
 
