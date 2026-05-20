@@ -2,10 +2,15 @@
 
 > **Fresh session?** Start at [../planning/HANDOVER.md](../planning/HANDOVER.md) for the
 > canonical session-start brief, then cross-reference architectural posture in
-> [../planning/v2 architecture/v2 architecture - Unknown.md](../planning/v2%20architecture/v2%20architecture%20-%20Unknown.md)
-> (the v2 charter — committed design rules, propagation tiers, library mode).
-> **Then** read this file and follow the session-start protocol below for
-> spec_agents-specific context.
+> [../planning/v2-charter.md](../planning/v2-charter.md) (the v2 charter —
+> committed design rules, propagation tiers, library mode). **Then** read
+> this file and follow the session-start protocol below for spec_agents-specific
+> context.
+>
+> **Drift discipline:** at session start and task close, run the
+> [drift-audit lens](../planning/agent-task/agent-templates/lenses/drift-audit.md)
+> against the docs you're about to trust or just touched. Fix drift first; don't
+> work over stale context.
 >
 > **Note (2026-05-20):** XR-006 signed — `AGENTS.md` is canonical going forward.
 > This file remains active until XR-006 execution replaces it with a one-line
@@ -20,9 +25,10 @@ proposing or executing any work:
 
 1. **Read [docs/CURRENT_STATE.md](docs/CURRENT_STATE.md)** — snapshot of where things are right now (commit, tests, public surface, active task).
 2. **Read [../planning/SYSTEM.md](../planning/SYSTEM.md) §11** — SA-* and XR-005 task definitions for this repo.
-3. **Verify the build:** importable surface check (`python -c "import spec_agents"` should succeed); once SA-001 lands, `python -m pytest -q` should match the test count in CURRENT_STATE.md.
-4. **Verify git is clean:** `git status --short` should be clean (or only show expected untracked files).
-5. **Ask the operator which task to work on** — don't assume.
+3. **Drift check** — quick scan of `CURRENT_STATE.md` master commit vs `git log --oneline -1` and decisions section vs `planning/HANDOVER.md`. If drift found, fix the doc *first*. See [drift-audit lens](../planning/agent-task/agent-templates/lenses/drift-audit.md).
+4. **Verify the build:** importable surface check (`python -c "import spec_agents"` should succeed); `python -m pytest -q` should match the test count in CURRENT_STATE.md.
+5. **Verify git is clean:** `git status --short` should be clean (or only show expected untracked files).
+6. **Ask the operator which task to work on** — don't assume.
 
 If you find drift between CURRENT_STATE.md and reality, **fix the doc first** before doing other work. CURRENT_STATE.md is the contract.
 

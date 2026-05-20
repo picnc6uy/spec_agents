@@ -6,11 +6,16 @@ defaults across the canonical stack (`spec_agents`, `spectacular`,
 be justified per-repo, not adopted casually.
 
 **Authoritative architectural posture** lives in
-[../../planning/v2 architecture/v2 architecture - Unknown.md](../../planning/v2%20architecture/v2%20architecture%20-%20Unknown.md)
-(the v2 charter, committed 2026-05-20): library mode for `spec_agents`,
+[../../planning/v2-charter.md](../../planning/v2-charter.md) (the v2
+charter, committed 2026-05-20): library mode for `spec_agents`,
 propagation tiers (Skill → MCP → Plugin → Sibling app), the five planes
 vocabulary, the two-altitude discipline. This file encodes the
 operational implications.
+
+**Drift discipline** lives in
+[../../planning/agent-task/agent-templates/lenses/drift-audit.md](../../planning/agent-task/agent-templates/lenses/drift-audit.md):
+run it at session start and task close. The verification template now
+requires a drift check before declaring a task ready-to-merge.
 
 XR-006 signed 2026-05-20: `AGENTS.md` is canonical across the stack;
 `CLAUDE.md` becomes a one-line pointer when XR-006 executes. Until then,
