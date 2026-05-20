@@ -30,10 +30,10 @@ and (eventually) `photo_archive`.
 
 ## Current state
 
-One `init` commit (`8dd5bc5`). No `docs/`, no tests, no CI, no pre-commit, no tag.
-See [../planning/SYSTEM.md](../planning/SYSTEM.md) tasks SA-001 (pre-commit +
-CURRENT_STATE.md + smoke tests) and XR-005 (tag v0.1.0 + git-URL pin) for the
-next things to land.
+Tagged `v0.1.0` (2026-05-20). See [docs/CURRENT_STATE.md](docs/CURRENT_STATE.md)
+for the live snapshot (commit, tests, pre-commit posture). Active backlog in
+[../planning/SYSTEM.md](../planning/SYSTEM.md) — primarily SA-002 (critic),
+SA-003 (verifiers), SA-004 (plan-then-act), gated behind the foundation pass.
 
 ## Public surface — do not break
 
@@ -43,10 +43,20 @@ next things to land.
 - **Structured logging** (`spec_agents.logging.setup`)
 - **Pydantic message types** (`spec_agents.messages`)
 
-Consumers install editable from a sibling clone (`pip install -e ../spec_agents`)
-until v0.1.0 is tagged and a git-URL pin replaces the editable install in
-`spectacular` and `personal_os` pyproject.toml. Don't ship breaking changes to the
-public surface without coordinating the version bump in both consumers.
+**Consumers pin via git URL** (XR-005, 2026-05-20):
+
+```toml
+"spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.1.0",
+```
+
+For local dev, override the pin in the consumer venv:
+`pip install -e ../spec_agents`. This is the standard pattern when iterating
+on a kernel change before cutting a new tag.
+
+Don't ship breaking changes to the public surface without (a) bumping
+`pyproject.toml` version, (b) tagging the new release, (c) updating the pin
+in `spectacular` and `personal_os`. Each surface change is now an explicit
+version event, not implicit drift.
 
 ## Dependencies
 

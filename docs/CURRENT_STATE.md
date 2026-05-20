@@ -10,7 +10,9 @@ material things change.
 
 **Master commit:** SA-001 pass (see latest commit message).
 
-**Tag:** none yet — v0.1.0 is the target (XR-005, gated on D-5).
+**Tag:** `v0.1.0` (2026-05-20, D-5 signed; XR-005 closed). Consumers
+pin via `spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.1.0`
+in their pyproject.toml.
 
 **Pushed to:** `picnc6uy/spec_agents` (private GitHub).
 
