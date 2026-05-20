@@ -18,9 +18,9 @@ from enum import IntEnum
 
 class AdapterPriority(IntEnum):
     CRITICAL = 1  # high-cadence signals — run first, alert on staleness
-    HIGH = 2      # daily on-chain / behavioral
-    NORMAL = 3    # daily price / volume
-    LOW = 4       # weekly macro / context
+    HIGH = 2  # daily on-chain / behavioral
+    NORMAL = 3  # daily price / volume
+    LOW = 4  # weekly macro / context
 
 
 @dataclass

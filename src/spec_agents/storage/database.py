@@ -44,6 +44,7 @@ def init_db(database_url: str, metadata: "MetaData | None" = None) -> None:
     )
 
     if "sqlite" in database_url:
+
         @event.listens_for(_engine, "connect")  # type: ignore[misc]
         def set_sqlite_pragma(dbapi_conn: object, _: object) -> None:
             cursor = dbapi_conn.cursor()  # type: ignore[union-attr]

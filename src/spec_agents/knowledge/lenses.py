@@ -39,7 +39,6 @@ USAGE:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from functools import lru_cache
 from pathlib import Path
 
 import structlog
@@ -144,9 +143,7 @@ class LensLoader:
         if name in self._cache:
             return self._cache[name]
         if name not in self.lenses:
-            raise KeyError(
-                f"Unknown lens: {name!r}. Available: {sorted(self.lenses)}"
-            )
+            raise KeyError(f"Unknown lens: {name!r}. Available: {sorted(self.lenses)}")
         lens = self.lenses[name]
         parts: list[str] = [
             f"# Lens: {lens.name}",

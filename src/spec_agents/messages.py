@@ -31,11 +31,11 @@ class AgentMessage(BaseModel):
     run_id: str
     model: str
     temperature: float
-    input_hash: str          # SHA256 of input content — excludes timestamps/run metadata
-    ensemble_run: int = 1    # which run in the ensemble (1-indexed)
+    input_hash: str  # SHA256 of input content — excludes timestamps/run metadata
+    ensemble_run: int = 1  # which run in the ensemble (1-indexed)
     reasoning_chain: list[str]
-    conclusion: str          # natural language narrative
-    direction: Direction     # structured for ensemble agreement
+    conclusion: str  # natural language narrative
+    direction: Direction  # structured for ensemble agreement
     confidence: float = Field(ge=0.0, le=1.0)
     confidence_basis: list[str]
     contradicting_evidence: list[str]
@@ -47,8 +47,7 @@ class AgentMessage(BaseModel):
     def must_have_conditions(cls, v: list[str]) -> list[str]:
         if not v:
             raise ValueError(
-                "invalidation_conditions cannot be empty. "
-                "Every claim must be falsifiable."
+                "invalidation_conditions cannot be empty. " "Every claim must be falsifiable."
             )
         return v
 

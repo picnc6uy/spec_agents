@@ -8,19 +8,26 @@ material things change.
 
 ## As of 2026-05-20
 
-**Master commit:** `6e093f0` (XR-001: detect-secrets pre-commit hook)
+**Master commit:** SA-001 pass (see latest commit message).
 
 **Tag:** none yet — v0.1.0 is the target (XR-005, gated on D-5).
 
 **Pushed to:** `picnc6uy/spec_agents` (private GitHub).
 
-**Tests:** none yet — SA-001 includes the first smoke tests (importable
-surface check; instantiate Adapter ABC subclass; load a lens; instantiate
-engine). Until then, "working" means the public surface imports without
-error.
+**Tests:** 11 passing in ~0.2s · ruff + ruff-format clean.
+Surface coverage: imports, Adapter ABC contract enforcement, LensLoader
+header-anchored extraction, AgentMessage falsifiability invariant.
 
-**Pre-commit:** `detect-secrets` v1.5.0 with seeded `.secrets.baseline`
-(XR-001). Ruff + smoke tests arrive with SA-001.
+**Pre-commit:** `ruff` (with `--fix`) · `ruff-format` · pre-commit-hooks
+(trailing-whitespace, end-of-file-fixer, check-yaml, check-toml,
+check-merge-conflict, large-files, private-key) · `detect-secrets`
+v1.5.0 with seeded `.secrets.baseline`. Pyright runs in CI (XR-008),
+not in the hook.
+
+**Conventions:** [docs/CONVENTIONS.md](CONVENTIONS.md) declares the
+standards expected of consumers (Python ≥3.12, ruff/pyright config,
+Pydantic v2, SQLAlchemy 2.0+, structlog, Adapter pattern, lens pattern,
+no live calls in unit tests, secrets via `.env`).
 
 ---
 
@@ -39,13 +46,14 @@ pyproject.toml (XR-005, gated on D-5).
 
 ## What Works End-to-End
 
-The public surface is importable as documented in CLAUDE.md. No
-end-to-end behavior is verified yet — that's SA-001.
+Public surface imports cleanly; the four covered primitives
+(Adapter ABC, LensLoader, AgentMessage, RawMetricIn) round-trip through
+their documented contracts in the smoke-test suite.
 
 ## What's Stubbed / Deferred
 
-- **`docs/`** — only this file and a future `docs/CONVENTIONS.md` (SA-001).
-- **CI** — XR-008 will add the canonical workflow.
+- **CI** — XR-008 will add the canonical workflow (will include pyright
+  strict, currently only enforced via local `pyright .`).
 - **`spec_agents.testing` shared fixture module** — XR-009.
 - **`spec_agents.agents.critic`, `.verifiers`, plan-then-act helper** —
   SA-002 / SA-003 / SA-004 (queued behind foundation pass).
@@ -53,9 +61,9 @@ end-to-end behavior is verified yet — that's SA-001.
 
 ## Active Sprint
 
-⬜ **None.** Foundation pass in progress per `planning/SYSTEM.md`
-2026-05-20 reframe. Next task in execution order for this repo: **SA-001**
-(pre-commit ruff + CURRENT_STATE.md + smoke tests + CONVENTIONS.md).
+⬜ Foundation pass per `planning/SYSTEM.md` 2026-05-20 reframe.
+SA-001 shipped 2026-05-20. Next task in execution order: **XR-005**
+(tag v0.1.0 + pin via git URL), gated on operator sign-off of D-5.
 
 ## Known Issues / Cleanup Items
 

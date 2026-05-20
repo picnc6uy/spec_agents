@@ -9,6 +9,7 @@ score trends) is intentionally NOT extracted into spec_agents because it
 couples to domain-specific DB models. Each consumer writes its own memory
 module over its own Brief-equivalent models.
 """
+
 from spec_agents.knowledge.lenses import Lens, LensLoader, LensSection
 
 __all__ = ["Lens", "LensLoader", "LensSection"]
