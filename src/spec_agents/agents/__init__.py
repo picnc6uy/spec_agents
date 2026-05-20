@@ -8,7 +8,8 @@ Current primitives:
   - critic: forced-tool-use critic call. (SA-002)
   - verifiers: schema + evidence verifiers that catch errors without
     spending tokens. (SA-003)
-
-Queued (per planning/SYSTEM.md):
-  - plan-then-act: two-call orchestration for structured decisions (SA-004).
+  - plan_then_act: two-call orchestration for structured decisions
+    (SA-004). Composes two critic.critique calls — library-mode at its
+    purest: kernel adds zero LLM-orchestration code beyond the
+    composition.
 """

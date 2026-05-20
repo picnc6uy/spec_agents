@@ -8,18 +8,17 @@ material things change.
 
 ## As of 2026-05-20
 
-**Master commit:** XR-011 Batch-API wrapper (see latest commit message).
+**Master commit:** SA-004 plan-then-act (see latest commit message).
 
-**Tag:** `v0.5.0` (2026-05-20, XR-011 wraps Anthropic's Batch API around
-the XR-010 eval harness — 50% discount, async fanout for hundreds of
-historical-run replays without changing the Scorer contract).
-Consumers pin via
-`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.5.0`.
+**Tag:** `v0.6.0` (2026-05-20, SA-004 ships the two-call plan-then-act
+orchestration — pure composition of two `critic.critique` calls;
+library-mode at its purest). Consumers pin via
+`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.6.0`.
 Bump version on any further public-surface change.
 
 **Pushed to:** `picnc6uy/spec_agents` (private GitHub).
 
-**Tests:** 57 passing in ~1.3s · ruff + ruff-format clean.
+**Tests:** 63 passing in ~1.4s · ruff + ruff-format clean.
 Surface coverage: imports, Adapter ABC contract enforcement, LensLoader
 header-anchored extraction, AgentMessage falsifiability invariant,
 `spec_agents.testing.db` (XR-009), `spec_agents.agents.critic.critique`
@@ -65,6 +64,9 @@ standards expected of consumers and is mirrored into `spectacular` and
 - **Batch-API wrapper** (`spec_agents.eval.batch`: `submit_batch`,
   `get_batch_status`, `wait_for_batch`, `fetch_results`, `build_invoker`,
   `BatchResult`) — XR-011
+- **Plan-then-act orchestration**
+  (`spec_agents.agents.plan_then_act.plan_then_act`,
+  `PlanThenActResult`) — SA-004
 
 Consumers pin via the git-URL pattern in their `pyproject.toml`
 (XR-005). For local dev, override with `pip install -e ../spec_agents`.
@@ -79,23 +81,22 @@ regression suite).
 
 ## What's Stubbed / Deferred
 
-- **`spec_agents.agents.plan_then_act`** — SA-004 (two-call orchestration
-  for structured decisions). Queued; awaits a real consumer (photo_archive
-  match decisions per the brief).
 - **`spec_agents.consolidation`** — runtime "dream" / memory consolidation
   primitive named in the v2 charter. Waits for Brier baseline + critic.
 
 ## Active Sprint
 
 ⬜ Foundation pass closed (XR-001/3/5/6/8/9, SA-001, POS-001). Methodology
-band has four shipped primitives so far: SA-002 (critic, v0.2.0), XR-010
-(eval harness, v0.3.0), SA-003 (verifiers, v0.4.0), **XR-011** (batch
-wrapper, v0.5.0). Library-mode posture proven across critic call,
-harness loop, zero-token checks, and async fanout.
-Next-3 in execution order: **SA-004** (plan-then-act primitive — last
-kernel slot in the SA-* lane), **POS-003** (personal_os summary critic —
+band has five shipped primitives so far: SA-002 (critic, v0.2.0), XR-010
+(eval harness, v0.3.0), SA-003 (verifiers, v0.4.0), XR-011 (batch
+wrapper, v0.5.0), **SA-004** (plan-then-act, v0.6.0). Library-mode
+posture proven across critic call, harness loop, zero-token checks,
+async fanout, and two-call orchestration.
+Next-3 in execution order: **POS-003** (personal_os summary critic —
 first SA-002 consumer outside spectacular), **SR-006** (few-shot lens
-upgrade — needs operator-curated run_ids; deferred until then).
+upgrade — needs operator-curated run_ids; deferred until then),
+**T-033** (Claude vision pipeline for photo_archive — gated on D-4
+execution).
 
 ## Known Issues / Cleanup Items
 
