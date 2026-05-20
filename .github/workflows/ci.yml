@@ -27,11 +27,13 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
 
-      - name: Install package + dev extras
+      - name: Install package + dev tools
         # Consumers install spec-agents from the git URL pinned in their
         # pyproject.toml (XR-005). The kernel itself installs editable
-        # from source.
-        run: pip install -e ".[dev]" pyright detect-secrets
+        # from source. ruff/pyright/detect-secrets are installed
+        # explicitly so the canonical workflow is independent of which
+        # repo-specific extras include them.
+        run: pip install -e ".[dev]" ruff pyright detect-secrets
 
       - name: Lint (ruff)
         run: |
