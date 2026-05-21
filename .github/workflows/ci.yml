@@ -6,6 +6,15 @@ on:
   pull_request:
     branches: ["**"]
 
+# Opt in to Node 24 ahead of GitHub's 2026-06-02 forced switch.
+# actions/checkout@v4 + actions/setup-python@v5 are Node-20-based;
+# this env var tells the runner to execute them on Node 24 instead.
+# Documented at:
+#   github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+# (ci-node-migration-01 / S1.E2 of dev-plan-30d-revision-01)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
