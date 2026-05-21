@@ -23,3 +23,14 @@ repos:
     hooks:
       - id: detect-secrets
         args: ['--baseline', '.secrets.baseline']
+
+  # agent-task discipline: require .agent/tasks/<id>.md on agent/<id> branches.
+  # Source of truth: planning/agent-task/scripts/check_agent_task_spec.sh
+  - repo: local
+    hooks:
+      - id: agent-task-spec
+        name: agent-task discipline (spec required on agent/* branches)
+        entry: bash scripts/check_agent_task_spec.sh
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]

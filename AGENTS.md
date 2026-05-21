@@ -15,6 +15,21 @@
 
 ---
 
+## Discipline gate — READ BEFORE ANY CODE CHANGE
+
+**Do not make code changes without an active task spec** at `.agent/tasks/<id>.md`. The spec is the contract; freestyle execution produces no audit trail and is the failure mode `planning/v1-state-report.md` was written to surface. Two cases:
+
+1. **Spec exists** (operator ran `agent-task new <id> <type>`, branch is `agent/<id>`): proceed within the spec's `files.touched`, write `.agent/verifications/<id>.md` when done.
+2. **No spec; operator gives ambiguous direction** ("go", "do option 1", "make X work"): your first response is *"what's the task spec? running `agent-task new` for that?"* — not direct execution.
+
+The operator may explicitly waive (*"skip the spec for this drift fix"*). Trivial single-file doc edits and chore commits don't need a spec.
+
+A pre-commit hook on `agent/*` branches enforces this mechanically — commits without `.agent/tasks/<id>.md` are rejected. Bypass with `--no-verify` only when the operator has waived.
+
+See `../planning/dev-env-handoff.md` ("Prompts are soft; protocols are hard") and `../planning/v1-state-report.md` for the rationale.
+
+---
+
 ## Session-Start Protocol
 
 When starting a new session on spec_agents, do these five things before
