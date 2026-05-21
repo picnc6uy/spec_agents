@@ -8,7 +8,7 @@ material things change.
 
 ## As of 2026-05-20
 
-**Master commit:** SA-004 plan-then-act (see latest commit message).
+**Master commit:** `fd73abb` (discipline: add agent-task-spec pre-commit hook + AGENTS.md gate preamble). Prior tip was SA-004 plan-then-act + bump_consumers.py script.
 
 **Tag:** `v0.6.0` (2026-05-20, SA-004 ships the two-call plan-then-act
 orchestration — pure composition of two `critic.critique` calls;
