@@ -24,6 +24,8 @@
 
 The operator may explicitly waive (*"skip the spec for this drift fix"*). Trivial single-file doc edits and chore commits don't need a spec.
 
+**Before complex inline work, match the task to available subagents.** `Plan` for planning tasks (the planning lens requires the spawn), `Explore` for file-location and reference searches (architecture-review / bug-fix / refactor lenses recommend it), `general-purpose` for multi-step research across the repo (security-review prefers it). Each lens names the subagent it expects — read the lens at session start and check before working inline. The default of "do not spawn subagents unless asked" is overridden by the lens's `Subagent integration` section.
+
 A pre-commit hook on `agent/*` branches enforces this mechanically — commits without `.agent/tasks/<id>.md` are rejected. Bypass with `--no-verify` only when the operator has waived.
 
 See `../planning/dev-env-handoff.md` ("Prompts are soft; protocols are hard") and `../planning/v1-state-report.md` for the rationale.
