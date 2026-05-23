@@ -6,9 +6,9 @@ material things change.
 
 ---
 
-## As of 2026-05-20
+## As of 2026-05-23
 
-**Master commit:** `fd73abb` (discipline: add agent-task-spec pre-commit hook + AGENTS.md gate preamble). Prior tip was SA-004 plan-then-act + bump_consumers.py script.
+**Master commit:** `7f1b2c3 ci: enable Node 24 via FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 env (FM-1 / S1.E2)`. Recent landings since 2026-05-20: `7f1b2c3` (Node 24), `d6e9b4c S1.E4: AGENTS.md — add subagent tool-match guidance`, `3a22164 docs: drift-audit fix — CURRENT_STATE master-commit line (S1.E5)`, `fd73abb` (discipline gate). Kernel-freeze posture in effect; v2 sprint plan calls for spec_agents maintenance-only this cycle.
 
 **Tag:** `v0.6.0` (2026-05-20, SA-004 ships the two-call plan-then-act
 orchestration — pure composition of two `critic.critique` calls;
