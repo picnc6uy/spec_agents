@@ -34,3 +34,13 @@ repos:
         language: system
         pass_filenames: false
         stages: [pre-commit]
+
+      # drift-audit: fail commit if docs/CURRENT_STATE.md '## As of' line is
+      # stale (>3 days) and the repo has commits since that date.
+      # Source of truth: planning/agent-task/scripts/check_current_state_drift.py
+      - id: drift-audit
+        name: drift-audit (CURRENT_STATE.md staleness check)
+        entry: python scripts/check_current_state_drift.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
