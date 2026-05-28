@@ -63,6 +63,23 @@ class Lens:
     sections: tuple[LensSection, ...]
 
 
+@dataclass(frozen=True)
+class ValidationIssue:
+    """A section declared by a Lens that won't resolve at load time.
+
+    Surfaced by :meth:`LensLoader.validate` and (warning-mode) by
+    :meth:`LensLoader.__init__`. ``kind`` is one of:
+
+    - ``"doc_missing"``  — the named doc file does not exist under ``docs_root``.
+    - ``"header_missing"`` — the doc exists but no line matches the header.
+    """
+
+    lens_name: str
+    doc: str
+    header: str
+    kind: str
+
+
 # ── Section-extraction helpers ────────────────────────────────────────────────
 
 
@@ -118,6 +135,22 @@ def _extract_section(doc_path: Path, header: str) -> str:
     return "\n".join(lines[start_idx:end_idx]).rstrip()
 
 
+def _section_present(doc_path: Path, header: str) -> bool:
+    """Return True if a line in `doc_path` matches `header` exactly (after strip).
+
+    Lightweight check used by :meth:`LensLoader.validate`. Does not log;
+    the caller decides how to surface absence. Returns False on any I/O
+    failure (caller treats that path as "header_missing" only after the
+    separate doc-existence check has passed).
+    """
+    target = header.strip()
+    try:
+        text = doc_path.read_text(encoding="utf-8")
+    except OSError:
+        return False
+    return any(line.strip() == target for line in text.splitlines())
+
+
 # ── LensLoader ────────────────────────────────────────────────────────────────
 
 
@@ -133,6 +166,51 @@ class LensLoader:
         self.lenses = dict(lenses)
         # Per-instance cache so two loaders don't share cached text
         self._cache: dict[str, str] = {}
+        # Eager validation: catches doc edits / missing files at construction
+        # rather than at first load_lens() call. Warning-mode: never raises;
+        # callers that want strict behavior can inspect validate() directly.
+        for issue in self.validate():
+            log.warning(
+                "knowledge.lens_validation_issue",
+                lens=issue.lens_name,
+                doc=issue.doc,
+                header=issue.header,
+                kind=issue.kind,
+            )
+
+    def validate(self) -> list[ValidationIssue]:
+        """Return a list of sections that won't resolve under current state.
+
+        Iterates every ``(lens_name, section)`` pair in declaration order
+        and checks: (a) the doc file exists under ``docs_root``, and (b) a
+        line in that doc matches the section's header exactly. Returns an
+        empty list when every section resolves. Does not mutate loader
+        state; safe to call from tests or operator scripts.
+        """
+        issues: list[ValidationIssue] = []
+        for lens_name, lens in self.lenses.items():
+            for section in lens.sections:
+                doc_path = self.docs_root / section.doc
+                if not doc_path.exists():
+                    issues.append(
+                        ValidationIssue(
+                            lens_name=lens_name,
+                            doc=section.doc,
+                            header=section.header,
+                            kind="doc_missing",
+                        )
+                    )
+                    continue
+                if not _section_present(doc_path, section.header):
+                    issues.append(
+                        ValidationIssue(
+                            lens_name=lens_name,
+                            doc=section.doc,
+                            header=section.header,
+                            kind="header_missing",
+                        )
+                    )
+        return issues
 
     def list_lenses(self) -> list[str]:
         """Return all available lens names sorted."""

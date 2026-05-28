@@ -8,7 +8,7 @@ material things change.
 
 ## As of 2026-05-28
 
-**Master commit:** `6fb4a29 docs(sprints): SPRINTS.md — kernel-freeze posture + backlog sketches (Gap 2)`. Recent landings since 2026-05-23: `6fb4a29` (Gap 2 — SPRINTS.md backlog sketches), `d3058c5` (Gap 1 — drift-audit pre-commit hook installed), `2b401d3` (CURRENT_STATE discipline-sprint refresh to 2026-05-23). Kernel-freeze posture in effect; v2 sprint plan calls for spec_agents maintenance-only this cycle. **This commit** adds `.agent/` scaffold (agent-task contracts) — first non-maintenance change of the cycle, motivated by `spec-agents-lens-validator` follow-up to D-citations-files-pdf DECLINE memo.
+**Master commit:** `792f116 chore: add agent-task contracts (.agent/) + CURRENT_STATE drift refresh`. Recent landings since 2026-05-23: `792f116` (agent-task contracts + drift refresh), `6fb4a29` (Gap 2 — SPRINTS.md backlog sketches), `d3058c5` (Gap 1 — drift-audit pre-commit hook installed), `2b401d3` (CURRENT_STATE discipline-sprint refresh to 2026-05-23). Kernel-freeze posture in effect; v2 sprint plan calls for spec_agents maintenance-only this cycle. **`spec-agents-lens-validator` ships imminently** (closes Move 1 of D-citations-files-pdf DECLINE): adds `LensLoader.validate()` + auto-warn in `__init__` + `ValidationIssue` dataclass.
 
 **Tag:** `v0.6.0` (2026-05-20, SA-004 ships the two-call plan-then-act
 orchestration — pure composition of two `critic.critique` calls;
@@ -18,7 +18,7 @@ Bump version on any further public-surface change.
 
 **Pushed to:** `picnc6uy/spec_agents` (private GitHub).
 
-**Tests:** 63 passing in ~1.4s · ruff + ruff-format clean.
+**Tests:** 67 passing in ~1.4s · ruff + ruff-format clean.
 Surface coverage: imports, Adapter ABC contract enforcement, LensLoader
 header-anchored extraction, AgentMessage falsifiability invariant,
 `spec_agents.testing.db` (XR-009), `spec_agents.agents.critic.critique`
@@ -48,7 +48,13 @@ standards expected of consumers and is mirrored into `spectacular` and
 
 - **Adapter ABC** (`spec_agents.ingestion.adapters.base.Adapter`)
 - **Knowledge layer** (`spec_agents.knowledge.lenses`: `Lens`,
-  `LensSection`, `LensLoader`)
+  `LensSection`, `LensLoader`, `ValidationIssue`). `LensLoader.__init__`
+  eagerly validates all `(lens, section)` triples and emits
+  `log.warning("knowledge.lens_validation_issue", ...)` per broken
+  reference (`doc_missing` or `header_missing`); callers can also call
+  `loader.validate() -> list[ValidationIssue]` directly. Warning-mode:
+  never raises. (Added 2026-05-28, spec-agents-lens-validator,
+  closes Move 1 of D-citations-files-pdf DECLINE.)
 - **DB helpers** (`spec_agents.storage`)
 - **Structured logging** (`spec_agents.logging`)
 - **Pydantic message types** (`spec_agents.messages`: `AgentMessage`,
@@ -111,7 +117,7 @@ execution).
 3. Read `AGENTS.md` for the session-start protocol
 4. Drift check: `git log --oneline -1` should match the master commit
    line above; if not, fix this file first
-5. `python -m pytest -q` should show 63 passing
+5. `python -m pytest -q` should show 67 passing
 6. Read `planning/SYSTEM.md` §11 for SA-* and XR-010 scope
 7. `git status` should be clean
 8. Ask the operator which task to work on
