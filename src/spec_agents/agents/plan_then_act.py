@@ -31,7 +31,7 @@ Typical consumer (sketch — exact prompts/schemas are domain-specific):
 
     result = plan_then_act(
         client=client,
-        model="claude-opus-4-7",
+        model="claude-opus-4-8",
         plan_system_prompt=MATCH_PLAN_RULES,
         plan_user_prompt=build_plan_prompt(candidate, evidence),
         plan_schema=MATCH_PLAN_SCHEMA,
