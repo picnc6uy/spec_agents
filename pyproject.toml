@@ -26,7 +26,9 @@ packages = ["src/spec_agents"]
 
 [tool.pyright]
 include = ["src"]
-strict = true
+strict = []  # pyright wants an array of paths here, not a boolean. Empty
+             # = no paths in strict mode (matches current default-mode behavior).
+             # See planning/architecture-reviews/2026-05-28-autonomous-run-findings.md §1.
 pythonVersion = "3.12"
 
 [tool.ruff]
