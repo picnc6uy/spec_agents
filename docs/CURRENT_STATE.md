@@ -37,7 +37,10 @@ not in the hook.
 
 **CI:** canonical workflow per XR-008 (Python 3.12; pip install -e
 `.[dev]` + pinned ruff/pyright/detect-secrets; ruff check + format;
-pyright strict; detect-secrets-hook against baseline; pytest).
+pyright (default mode — `strict = []`, not strict; corrected 2026-05-28
+doc-honesty sweep); detect-secrets-hook against baseline; pytest).
+`pyright==1.1.360` is now also pinned in the `dev` extra so a local
+`.[dev]` reproduces CI's type-check (spec-agents-pyright-pin, Open Q5).
 
 **Conventions:** [docs/CONVENTIONS.md](CONVENTIONS.md) declares the
 standards expected of consumers and is mirrored into `spectacular` and

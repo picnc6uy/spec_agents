@@ -19,6 +19,8 @@ dependencies = [
 dev = [
     "pytest>=8.0.0",
     "pytest-cov>=5.0.0",
+    "pyright==1.1.360",  # pinned to match CI so a local `.[dev]` reproduces CI's
+                         # type-check result exactly (stack-wide pin, review Open Q5).
 ]
 
 [tool.hatch.build.targets.wheel]
