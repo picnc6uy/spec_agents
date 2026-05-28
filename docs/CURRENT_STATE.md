@@ -8,17 +8,18 @@ material things change.
 
 ## As of 2026-05-28
 
-**Master commit:** `792f116 chore: add agent-task contracts (.agent/) + CURRENT_STATE drift refresh`. Recent landings since 2026-05-23: `792f116` (agent-task contracts + drift refresh), `6fb4a29` (Gap 2 — SPRINTS.md backlog sketches), `d3058c5` (Gap 1 — drift-audit pre-commit hook installed), `2b401d3` (CURRENT_STATE discipline-sprint refresh to 2026-05-23). Kernel-freeze posture in effect; v2 sprint plan calls for spec_agents maintenance-only this cycle. **`spec-agents-lens-validator` ships imminently** (closes Move 1 of D-citations-files-pdf DECLINE): adds `LensLoader.validate()` + auto-warn in `__init__` + `ValidationIssue` dataclass.
+**Master commit:** `usage-cost-fn: add spec_agents.usage — single-source pricing` (HEAD after ff-merge of the usage-cost-fn branch). Recent landings 2026-05-28: lens-validator (v0.7.0), conftest sys.path, version sync, pyright config fix (`strict = []`), Opus 4.8 docstring migration, and **usage-cost-fn (v0.8.0)**. Kernel-freeze posture remains; this `usage` add is an operator-approved freeze exception (single-source pricing function) per the 2026-05-28 comprehensive review Open Q3.
 
-**Tag:** `v0.7.0` (2026-05-28, adds `LensLoader.validate()` +
-`ValidationIssue` dataclass — spec-agents-lens-validator, closes Move 1
-of D-citations-files-pdf DECLINE). Consumers pin via
-`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.7.0`.
+**Tag:** `v0.8.0` (2026-05-28, adds `spec_agents.usage`:
+`model_cost_usd()` + `PRICING_USD_PER_MTOK` — single source of truth for
+Anthropic token→USD cost across the stack). Prior: `v0.7.0`
+(`LensLoader.validate()` + `ValidationIssue`). Consumers pin via
+`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.8.0`.
 Bump version on any further public-surface change.
 
 **Pushed to:** `picnc6uy/spec_agents` (private GitHub).
 
-**Tests:** 67 passing in ~1.4s · ruff + ruff-format clean.
+**Tests:** 73 passing in ~1.5s · ruff + ruff-format clean.
 Surface coverage: imports, Adapter ABC contract enforcement, LensLoader
 header-anchored extraction, AgentMessage falsifiability invariant,
 `spec_agents.testing.db` (XR-009), `spec_agents.agents.critic.critique`
@@ -73,6 +74,10 @@ standards expected of consumers and is mirrored into `spectacular` and
 - **Plan-then-act orchestration**
   (`spec_agents.agents.plan_then_act.plan_then_act`,
   `PlanThenActResult`) — SA-004
+- **Usage pricing** (`spec_agents.usage`: `model_cost_usd`,
+  `PRICING_USD_PER_MTOK`) — single source of truth for Anthropic
+  token→USD cost. Pure function; raises `KeyError` on unknown model.
+  (Added 2026-05-28, usage-cost-fn, v0.8.0.)
 
 Consumers pin via the git-URL pattern in their `pyproject.toml`
 (XR-005). For local dev, override with `pip install -e ../spec_agents`.
@@ -117,7 +122,7 @@ execution).
 3. Read `AGENTS.md` for the session-start protocol
 4. Drift check: `git log --oneline -1` should match the master commit
    line above; if not, fix this file first
-5. `python -m pytest -q` should show 67 passing
+5. `python -m pytest -q` should show 73 passing
 6. Read `planning/SYSTEM.md` §11 for SA-* and XR-010 scope
 7. `git status` should be clean
 8. Ask the operator which task to work on

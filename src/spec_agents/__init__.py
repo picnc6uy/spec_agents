@@ -14,6 +14,7 @@ Submodules:
   storage              - SQLAlchemy session/engine helpers
   messages             - Generic Pydantic message types
   testing              - Test fixtures (in-memory SQLite helper, XR-009)
+  usage                - Single-source Anthropic pricing + model_cost_usd
 """
 
-__version__ = "0.7.0"
+__version__ = "0.8.0"
