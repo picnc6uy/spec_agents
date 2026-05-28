@@ -10,10 +10,10 @@ material things change.
 
 **Master commit:** `792f116 chore: add agent-task contracts (.agent/) + CURRENT_STATE drift refresh`. Recent landings since 2026-05-23: `792f116` (agent-task contracts + drift refresh), `6fb4a29` (Gap 2 — SPRINTS.md backlog sketches), `d3058c5` (Gap 1 — drift-audit pre-commit hook installed), `2b401d3` (CURRENT_STATE discipline-sprint refresh to 2026-05-23). Kernel-freeze posture in effect; v2 sprint plan calls for spec_agents maintenance-only this cycle. **`spec-agents-lens-validator` ships imminently** (closes Move 1 of D-citations-files-pdf DECLINE): adds `LensLoader.validate()` + auto-warn in `__init__` + `ValidationIssue` dataclass.
 
-**Tag:** `v0.6.0` (2026-05-20, SA-004 ships the two-call plan-then-act
-orchestration — pure composition of two `critic.critique` calls;
-library-mode at its purest). Consumers pin via
-`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.6.0`.
+**Tag:** `v0.7.0` (2026-05-28, adds `LensLoader.validate()` +
+`ValidationIssue` dataclass — spec-agents-lens-validator, closes Move 1
+of D-citations-files-pdf DECLINE). Consumers pin via
+`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.7.0`.
 Bump version on any further public-surface change.
 
 **Pushed to:** `picnc6uy/spec_agents` (private GitHub).

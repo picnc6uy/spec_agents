@@ -1,64 +1,72 @@
 ﻿---
 id: spec-agents-version-bump
-title: Sync pyproject.toml + __init__.py version to v0.6.0
+title: Bump version to v0.7.0 (LensLoader.validate + ValidationIssue public surface)
 type: refactor
 lens: refactor
 created: 2026-05-28
 status: drafted
 acceptance:
-  - pyproject.toml version field reads "0.6.0"
-  - src/spec_agents/__init__.py __version__ reads "0.6.0"
-  - All existing tests pass with unchanged count
-  - No other files changed
+  - pyproject.toml version field reads "0.7.0"
+  - src/spec_agents/__init__.py __version__ reads "0.7.0"
+  - CURRENT_STATE.md Tag line names v0.7.0, dated 2026-05-28, notes "adds LensLoader.validate() + ValidationIssue dataclass"
+  - CURRENT_STATE.md consumer-pin URL updated to @v0.7.0
+  - pytest -q clean (67 passing; behavior unchanged)
+  - ruff + ruff-format clean
 files:
   touched:
     - pyproject.toml
     - src/spec_agents/__init__.py
+    - docs/CURRENT_STATE.md
   must-not-touch:
-    - docs/
     - .agent/
     - src/spec_agents/ (except __init__.py)
     - tests/
 ---
 
-# spec-agents-version-bump: Sync pyproject.toml + __init__.py version to v0.6.0
+# spec-agents-version-bump: Bump version to v0.7.0
 
 ## Why
 
-`pyproject.toml` and `src/spec_agents/__init__.py` both read `"0.4.0"` while
-the repo has been tagged through `v0.6.0`. Consumers that pin
-`spec-agents @ git+https://...@v0.6.0` get the correct code, but the package
-metadata reports the wrong version — which confuses `pip show`, `importlib.metadata`,
-and any tooling that reads `__version__`. This task closes the drift with a
-two-line change.
+`pyproject.toml` and `__init__.__version__` are stuck at `"0.4.0"` while the
+repo is tagged through `v0.6.0`, and `spec-agents-lens-validator` added
+`LensLoader.validate()` + `ValidationIssue` to the public surface on 2026-05-28
+(post-v0.6.0). Per SemVer MINOR rules and CURRENT_STATE.md's own "Bump version
+on any further public-surface change" rule, the correct target is `v0.7.0` — not
+v0.6.0 (which would close the metadata drift but immediately reopen it).
+`docs/CURRENT_STATE.md` also needs its Tag line and consumer-pin URL updated
+to match.
 
 ## What
 
-Change exactly two strings:
+Three files, five string changes:
 
-1. `pyproject.toml` line 7: `version = "0.4.0"` → `version = "0.6.0"`
-2. `src/spec_agents/__init__.py` line 19: `__version__ = "0.4.0"` → `__version__ = "0.6.0"`
+1. `pyproject.toml:7`: `version = "0.4.0"` → `version = "0.7.0"`
+2. `src/spec_agents/__init__.py:19`: `__version__ = "0.4.0"` → `__version__ = "0.7.0"`
+3. `docs/CURRENT_STATE.md` Tag block: replace the v0.6.0 tag line with a v0.7.0
+   line dated 2026-05-28 noting "adds `LensLoader.validate()` + `ValidationIssue`
+   dataclass". Consumer-pin URL changes from `@v0.6.0` → `@v0.7.0`.
 
-No logic changes, no dependency changes, no new exports. A single commit on
-`agent/spec-agents-version-bump` is sufficient — there are only two lines.
+No logic changes, no dependency changes, no test changes.
+
+Operator post-merge action (NOT part of this PR): `git tag v0.7.0 && git push origin v0.7.0`.
+The tag is what unblocks consumers to bump their pins; the PR only changes the strings.
 
 ## Out of scope
 
-- Bumping to v0.7.0 or tagging a new release (separate task when new features land)
-- Updating consumer pins in personal_os, photo_archive, spectacular
-- Touching `docs/CURRENT_STATE.md` — the "0.4.0" mention there is accurate historical
-  narrative describing what shipped in SA-003, not a live version reference
-- Any changes inside `tests/`, `.agent/verifications/`, or `.agent/tasks/`
+- Updating consumer pins in personal_os, photo_archive, spectacular (separate task)
+- Adding `spec-agents-lens-validator` to the Active Sprint history list in
+  CURRENT_STATE.md (already documented in the Public Surface section)
+- Any changes inside `tests/`, `.agent/`
 
 ## Notes
 
-`docs/CURRENT_STATE.md:97` references `v0.4.0` in the sentence "SA-003 (verifiers,
-v0.4.0)" — this is correct history and must not change.
+`docs/CURRENT_STATE.md:97` references `v0.4.0` in "SA-003 (verifiers, v0.4.0)"
+— that's accurate historical narrative; do not touch it.
 
-The refactor lens sanity check (`git stash && pytest -q && git stash pop; pytest -q`)
-is overkill for a two-line string change but run it anyway to satisfy the lens
-contract — expect identical test counts before and after.
+The Active Sprint section's "SA-004 (plan-then-act, v0.6.0)" is also history;
+leave it.
 
 ## References
-- HANDOVER.md "What's already done" — SA-003 shipped at v0.4.0 tag; v0.5.0 + v0.6.0
-  tagged subsequently without a pyproject.toml bump
+- Operator redirect 2026-05-28: v0.7.0 not v0.6.0 — LensLoader.validate +
+  ValidationIssue added post-v0.6.0; SemVer MINOR bump required
+- CURRENT_STATE.md "Bump version on any further public-surface change" rule
