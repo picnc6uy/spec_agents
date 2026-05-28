@@ -6,9 +6,9 @@ material things change.
 
 ---
 
-## As of 2026-05-23
+## As of 2026-05-28
 
-**Master commit:** `7f1b2c3 ci: enable Node 24 via FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 env (FM-1 / S1.E2)`. Recent landings since 2026-05-20: `7f1b2c3` (Node 24), `d6e9b4c S1.E4: AGENTS.md — add subagent tool-match guidance`, `3a22164 docs: drift-audit fix — CURRENT_STATE master-commit line (S1.E5)`, `fd73abb` (discipline gate). Kernel-freeze posture in effect; v2 sprint plan calls for spec_agents maintenance-only this cycle.
+**Master commit:** `6fb4a29 docs(sprints): SPRINTS.md — kernel-freeze posture + backlog sketches (Gap 2)`. Recent landings since 2026-05-23: `6fb4a29` (Gap 2 — SPRINTS.md backlog sketches), `d3058c5` (Gap 1 — drift-audit pre-commit hook installed), `2b401d3` (CURRENT_STATE discipline-sprint refresh to 2026-05-23). Kernel-freeze posture in effect; v2 sprint plan calls for spec_agents maintenance-only this cycle. **This commit** adds `.agent/` scaffold (agent-task contracts) — first non-maintenance change of the cycle, motivated by `spec-agents-lens-validator` follow-up to D-citations-files-pdf DECLINE memo.
 
 **Tag:** `v0.6.0` (2026-05-20, SA-004 ships the two-call plan-then-act
 orchestration — pure composition of two `critic.critique` calls;
@@ -111,7 +111,7 @@ execution).
 3. Read `AGENTS.md` for the session-start protocol
 4. Drift check: `git log --oneline -1` should match the master commit
    line above; if not, fix this file first
-5. `python -m pytest -q` should show 23 passing
+5. `python -m pytest -q` should show 63 passing
 6. Read `planning/SYSTEM.md` §11 for SA-* and XR-010 scope
 7. `git status` should be clean
 8. Ask the operator which task to work on
