@@ -7,6 +7,8 @@ can build on.
 Submodules:
   agents               - Agent-side primitives: critic (SA-002), verifiers
                          (SA-003 queued), plan-then-act (SA-004 queued)
+  caching              - Token-wise prompt-cache helpers: cached_text_block +
+                         warm_then_fan_out (avoid concurrent cache-miss storms)
   eval                 - Eval-harness runner (XR-010)
   ingestion.adapters   - Adapter ABC, scheduler primitives
   knowledge            - Lens + memory layer for LLM context
@@ -17,4 +19,4 @@ Submodules:
   usage                - Single-source Anthropic pricing + model_cost_usd
 """
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"
