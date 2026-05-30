@@ -20,9 +20,9 @@ from __future__ import annotations
 
 from typing import Final
 
-# Per-MTok pricing as of 2026-05-28 (Opus 4.8 release).
-# Cache multipliers follow Anthropic's documented model:
-#   cache_creation ≈ 1.25× input price; cache_read ≈ 0.1× input price.
+# Per-MTok pricing verified against the live API rate card 2026-05-30
+# (platform.claude.com/docs/en/about-claude/pricing). Cache multipliers per
+# Anthropic's model: 5m cache_creation = 1.25× input; cache_read = 0.1× input.
 PRICING_USD_PER_MTOK: Final[dict[str, dict[str, float]]] = {
     "claude-opus-4-8": {
         "input": 5.0,
@@ -31,10 +31,12 @@ PRICING_USD_PER_MTOK: Final[dict[str, dict[str, float]]] = {
         "cache_read": 0.50,
     },
     "claude-opus-4-7": {
-        "input": 15.0,
-        "output": 75.0,
-        "cache_creation": 18.75,
-        "cache_read": 1.50,
+        # Repriced to $5/$25 (matches 4.8) per the 2026-05-30 rate card;
+        # was $15/$75 at launch.
+        "input": 5.0,
+        "output": 25.0,
+        "cache_creation": 6.25,
+        "cache_read": 0.50,
     },
     "claude-sonnet-4-6": {
         "input": 3.0,
@@ -43,10 +45,12 @@ PRICING_USD_PER_MTOK: Final[dict[str, dict[str, float]]] = {
         "cache_read": 0.30,
     },
     "claude-haiku-4-5-20251001": {
-        "input": 0.80,
-        "output": 4.0,
-        "cache_creation": 1.0,
-        "cache_read": 0.08,
+        # Haiku 4.5 = $1/$5 (NOT the retired Haiku 3.5's $0.80/$4 — the prior
+        # table had 3.5's numbers mislabeled). Verified 2026-05-30.
+        "input": 1.0,
+        "output": 5.0,
+        "cache_creation": 1.25,
+        "cache_read": 0.10,
     },
 }
 

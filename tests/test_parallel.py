@@ -176,8 +176,8 @@ def test_usage_aggregates_across_the_fanout() -> None:
     assert u.output_tokens == 20
     assert u.cache_read_tokens == 200
     assert u.cache_creation_tokens == 0
-    # cost = (40*0.80 + 20*4.0 + 200*0.08) / 1e6 at Haiku rates
-    expected = (40 * 0.80 + 20 * 4.0 + 200 * 0.08) / 1_000_000
+    # cost = (40*1.0 + 20*5.0 + 200*0.10) / 1e6 at Haiku 4.5 rates ($1/$5, read $0.10)
+    expected = (40 * 1.0 + 20 * 5.0 + 200 * 0.10) / 1_000_000
     assert abs(u.cost_usd - expected) < 1e-12
     assert u.churning is False  # no creation → not churning
 
