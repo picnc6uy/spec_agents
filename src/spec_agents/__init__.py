@@ -6,7 +6,8 @@ can build on.
 
 Submodules:
   agents               - Agent-side primitives: critic (SA-002), verifiers
-                         (SA-003 queued), plan-then-act (SA-004 queued)
+                         (SA-003), plan-then-act (SA-004), parallel.map_agent
+                         (Haiku-parallel item processing over a warmed cache)
   caching              - Token-wise prompt-cache helpers: cached_text_block +
                          warm_then_fan_out (avoid concurrent cache-miss storms)
   eval                 - Eval-harness runner (XR-010)
@@ -19,4 +20,4 @@ Submodules:
   usage                - Single-source Anthropic pricing + model_cost_usd
 """
 
-__version__ = "0.9.0"
+__version__ = "0.10.0"

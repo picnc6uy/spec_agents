@@ -12,4 +12,8 @@ Current primitives:
     (SA-004). Composes two critic.critique calls — library-mode at its
     purest: kernel adds zero LLM-orchestration code beyond the
     composition.
+  - parallel: map_agent — fan a per-item model call (Haiku by default) over
+    many items with a warmed shared cache; returns results + aggregated
+    cost/usage. For massive item processing. Composes spec_agents.caching
+    (warm_then_fan_out) + spec_agents.usage.
 """
