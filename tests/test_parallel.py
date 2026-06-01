@@ -156,6 +156,64 @@ def test_tools_and_tool_choice_passthrough_only_when_provided() -> None:
     assert client2.messages.calls[0]["tool_choice"] == choice
 
 
+# ── cross-tier caching: cached_prefix_text ───────────────────────────────
+
+
+def test_cached_prefix_text_puts_corpus_first_and_preamble_uncached() -> None:
+    client = _FakeClient()
+    map_agent(
+        client=client,
+        items=["a", "b"],
+        shared_system_text="TIER_PREAMBLE",
+        cached_prefix_text="BIG_CORPUS",
+        build_user_content=lambda i: f"ask {i}",
+        parse=_parse_echo,
+    )
+    for call in client.messages.calls:
+        system = call["system"]
+        assert isinstance(system, list) and len(system) == 2
+        # Corpus first, and it is the ONLY cached block (the breakpoint).
+        assert system[0]["text"] == "BIG_CORPUS"
+        assert system[0]["cache_control"] == {"type": "ephemeral"}
+        # Preamble second, uncached.
+        assert system[1] == {"type": "text", "text": "TIER_PREAMBLE"}
+        assert "cache_control" not in system[1]
+
+
+def test_cached_prefix_text_corpus_block_identical_across_differing_preambles() -> None:
+    """The cross-tier cache invariant: same corpus + different preamble → the
+    leading cached block is byte-identical, so the corpus cache is reused."""
+    breadth = _FakeClient()
+    confirm = _FakeClient()
+    common = dict(
+        items=["x"],
+        cached_prefix_text="THE-WHOLE-REPO-CORPUS",
+        build_user_content=lambda i: str(i),
+        parse=_parse_echo,
+    )
+    map_agent(client=breadth, shared_system_text="BREADTH preamble", **common)
+    map_agent(client=confirm, shared_system_text="CONFIRM preamble differs", **common)
+    breadth_block = breadth.messages.calls[0]["system"][0]
+    confirm_block = confirm.messages.calls[0]["system"][0]
+    assert breadth_block == confirm_block  # identical cached corpus block → cache hit
+
+
+def test_no_cached_prefix_is_byte_identical_to_legacy_single_block() -> None:
+    """Omitting cached_prefix_text reproduces the original single cached block."""
+    client = _FakeClient()
+    map_agent(
+        client=client,
+        items=["x"],
+        shared_system_text="LEGACY_CTX",
+        build_user_content=lambda i: str(i),
+        parse=_parse_echo,
+    )
+    system = client.messages.calls[0]["system"]
+    assert system == [
+        {"type": "text", "text": "LEGACY_CTX", "cache_control": {"type": "ephemeral"}}
+    ]
+
+
 # ── usage aggregation + churn ────────────────────────────────────────────
 
 

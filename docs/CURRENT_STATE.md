@@ -6,6 +6,27 @@ material things change.
 
 ---
 
+## As of 2026-06-01
+
+**Latest landing:** `code-review-swarm` sprint A (**v0.11.0**) — two additive,
+backward-compatible caching hooks so one large corpus can be cached **once and
+read across many calls** (the cross-tier / shared-lens cases):
+
+- `map_agent(..., cached_prefix_text=...)` — when given, the corpus becomes the
+  sole *leading* cached block and `shared_system_text` trails it *uncached*, so a
+  breadth pass and a confirm pass over the same corpus share one cache entry.
+  Default `None` preserves the original single-cached-block behavior.
+- `critique(..., lens_first=True)` — places the cached lens block *before* the
+  rules block, so a synthesizer and its paired challenger (different rules, same
+  corpus) reuse one cached lens. Default `False` preserves rules-first ordering.
+
+Foundation for `planning/scripts/code_review_swarm.py` (sprint B; design:
+`planning/architecture-reviews/2026-06-01-code-review-swarm-design.md`).
+**Tests:** 103 passing · pinned ruff 0.8.4 check+format clean · pyright 1.1.360
+strict clean. Bump version on any further public-surface change.
+
+---
+
 ## As of 2026-05-28
 
 **Master commit:** `usage-cost-fn: add spec_agents.usage — single-source pricing` (HEAD after ff-merge of the usage-cost-fn branch). Recent landings 2026-05-28: lens-validator (v0.7.0), conftest sys.path, version sync, pyright config fix (`strict = []`), Opus 4.8 docstring migration, and **usage-cost-fn (v0.8.0)**. Kernel-freeze posture remains; this `usage` add is an operator-approved freeze exception (single-source pricing function) per the 2026-05-28 comprehensive review Open Q3.
@@ -65,7 +86,12 @@ standards expected of consumers and is mirrored into `spectacular` and
   `EnsembleResult`, `EvidenceItem`, `Direction`)
 - **In-memory test fixture** (`spec_agents.testing.db`:
   `in_memory_engine`, `in_memory_session`) — XR-009
-- **Critic primitive** (`spec_agents.agents.critic.critique`) — SA-002
+- **Critic primitive** (`spec_agents.agents.critic.critique`) — SA-002.
+  `lens_first=True` (v0.11.0) flips to lens-before-rules for shared-lens caching.
+- **Parallel map** (`spec_agents.agents.parallel.map_agent`, `MapResult`,
+  `MapUsage`) — warm-then-fan-out fan-out with usage/churn rollup.
+  `cached_prefix_text=...` (v0.11.0) puts a stable corpus in the sole leading
+  cached block for cross-call reuse.
 - **Eval harness** (`spec_agents.eval`: `run_eval`, `aggregate_numeric`,
   `EvalRun`, `EvalResult`, `Invoker`, `Scorer`) — XR-010
 - **Verifier helpers** (`spec_agents.agents.verifiers`: `verify`,
@@ -125,7 +151,7 @@ execution).
 3. Read `AGENTS.md` for the session-start protocol
 4. Drift check: `git log --oneline -1` should match the master commit
    line above; if not, fix this file first
-5. `python -m pytest -q` should show 73 passing
+5. `python -m pytest -q` should show 103 passing
 6. Read `planning/SYSTEM.md` §11 for SA-* and XR-010 scope
 7. `git status` should be clean
 8. Ask the operator which task to work on

@@ -52,6 +52,7 @@ def critique(
     lens_content: str | None = None,
     max_tokens: int = 3072,
     cache_lenses: bool = True,
+    lens_first: bool = False,
 ) -> dict[str, Any] | None:
     """Run one forced-tool-use critique pass.
 
@@ -73,6 +74,10 @@ def critique(
         max_tokens: Response token budget. Default 3072.
         cache_lenses: If True (default), add ``cache_control`` to the lens
             system block.
+        lens_first: If True (default False) and ``lens_content`` is set, place
+            the cached lens block *before* the rules block. Lets multiple calls
+            that share the lens but use different ``system_prompt`` rules reuse
+            one cached lens block. No effect when ``lens_content`` is None.
 
     Returns:
         Parsed tool input as a dict on success.
@@ -87,18 +92,26 @@ def critique(
         - System blocks: rules first (small, stable), lens content second
           (large, optionally cacheable). Anthropic's prompt cache key is the
           full block prefix, so this ordering maximizes hit rate when only
-          the user prompt changes.
+          the user prompt changes. Pass ``lens_first=True`` to flip the order
+          (lens before rules) so several callers sharing one cached lens but
+          differing in rules can all cache-read the single lens block.
         - Errors are caught here and logged; the caller sees ``None``. This
           matches the existing pattern in spectacular's brief_critic.py.
     """
-    system_blocks: list[dict[str, Any]] = [
-        {"type": "text", "text": system_prompt},
-    ]
+    rules_block: dict[str, Any] = {"type": "text", "text": system_prompt}
     if lens_content:
-        block: dict[str, Any] = {"type": "text", "text": lens_content}
+        lens_block: dict[str, Any] = {"type": "text", "text": lens_content}
         if cache_lenses:
-            block["cache_control"] = {"type": "ephemeral"}
-        system_blocks.append(block)
+            lens_block["cache_control"] = {"type": "ephemeral"}
+        # Default: rules first, lens second (cache hit when only the user prompt
+        # changes). With lens_first=True the cached lens leads, so two calls that
+        # share the lens but differ in rules (e.g. a synthesizer and its paired
+        # challenger over one corpus) still share the one cached lens block.
+        system_blocks: list[dict[str, Any]] = (
+            [lens_block, rules_block] if lens_first else [rules_block, lens_block]
+        )
+    else:
+        system_blocks = [rules_block]
 
     tools: list[dict[str, Any]] = [
         {

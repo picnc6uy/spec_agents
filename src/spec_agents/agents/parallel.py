@@ -66,6 +66,7 @@ def map_agent(
     client: Any,
     items: Sequence[T],
     shared_system_text: str,
+    cached_prefix_text: str | None = None,
     build_user_content: Callable[[T], Any],
     parse: Callable[[Any], R],
     model: str = DEFAULT_PARALLEL_MODEL,
@@ -84,10 +85,25 @@ def map_agent(
     it — avoiding the concurrent cache-creation storm. Each response is turned into a result
     by ``parse(response)``.
 
+    **Cross-tier caching** (``cached_prefix_text``): when a single large corpus is reused
+    across *several* ``map_agent`` calls that each need a *different* preamble (e.g. a
+    breadth pass and a confirm pass over the same code corpus), pass the corpus as
+    ``cached_prefix_text`` and the per-call preamble as ``shared_system_text``. The corpus
+    then becomes the sole cached block — placed first, with the breakpoint right after it —
+    so it is created once and cache-read by every call regardless of the trailing preamble.
+    Leave it ``None`` (default) to keep the original single-block behavior, where
+    ``shared_system_text`` itself is the cached block.
+
     Args:
         client: an Anthropic client (or any object with ``messages.create(**kwargs)``).
         items: the work items, in the order results should be returned.
-        shared_system_text: the stable, cacheable prefix shared by every item.
+        shared_system_text: the stable, cacheable prefix shared by every item. When
+            ``cached_prefix_text`` is given, this becomes the *uncached* trailing preamble
+            block instead (small, may vary across calls that share the corpus).
+        cached_prefix_text: optional large stable corpus placed first as the *only* cached
+            block, with ``shared_system_text`` appended uncached after it. Use to share one
+            corpus cache across multiple calls with differing preambles. Default ``None``
+            preserves the single-cached-block behavior.
         build_user_content: ``item -> user content`` (str or content-block list).
         parse: ``response -> result``. Owns any tool-use extraction / validation.
         model: defaults to Haiku (:data:`DEFAULT_PARALLEL_MODEL`).
@@ -105,7 +121,16 @@ def map_agent(
     Raises:
         Propagates the first exception observed from ``messages.create`` / ``parse``.
     """
-    system = [cached_text_block(shared_system_text)]
+    if cached_prefix_text is None:
+        system = [cached_text_block(shared_system_text)]
+    else:
+        # Corpus first as the sole cached block (breakpoint after it), preamble
+        # uncached after — so the corpus cache hits across calls with differing
+        # preambles. See the "Cross-tier caching" note in the docstring.
+        system = [
+            cached_text_block(cached_prefix_text),
+            {"type": "text", "text": shared_system_text},
+        ]
     records: list[tuple[int, int, int, int]] = []
     lock = threading.Lock()
 
