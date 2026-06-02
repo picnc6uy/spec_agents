@@ -8,7 +8,14 @@ material things change.
 
 ## As of 2026-06-01
 
-**Latest landing:** `code-review-swarm` sprint A (**v0.11.0**) — two additive,
+**Latest landing:** `verify-fail-severity-guard` (**v0.11.1**, bug-fix) — `verify()` now
+validates `fail_severity` at entry and raises `ValueError` on an unknown threshold.
+Previously a typo'd `fail_severity` ranked 99, so no real issue met it and verification
+silently returned `passed=True` (a check that couldn't fail). Issue severities keep the
+safe asymmetry (unknown ranks highest → fails). Signature unchanged. Found by the
+code_review_swarm dogfood review of this repo.
+
+**Prior landing:** `code-review-swarm` sprint A (**v0.11.0**) — two additive,
 backward-compatible caching hooks so one large corpus can be cached **once and
 read across many calls** (the cross-tier / shared-lens cases):
 

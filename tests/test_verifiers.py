@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+import pytest
+
 from spec_agents.agents.verifiers import (
     VerificationResult,
     VerifierIssue,
@@ -101,6 +103,28 @@ def test_verify_unknown_severity_treated_as_failing() -> None:
 
     result = verify(rules=[typo])
     assert result.passed is False
+
+
+def test_verify_typoed_fail_severity_raises_not_silently_passes() -> None:
+    """Regression: an unknown THRESHOLD ranked 99, so a real error never met it and
+    verify() returned passed=True — a verification that cannot fail. Now the threshold
+    is validated and a typo raises (loud) instead of silently passing."""
+
+    def emit_error() -> list[VerifierIssue]:
+        return [VerifierIssue(code="x.err", message="real error", severity="error")]
+
+    with pytest.raises(ValueError, match="fail_severity"):
+        verify(rules=[emit_error], fail_severity="errrn")
+
+
+def test_verify_evidence_inherits_fail_severity_guard() -> None:
+    """The wrappers forward fail_severity to verify(), so they inherit the guard."""
+
+    def rule(output: dict[str, Any], source: dict[str, Any]) -> list[VerifierIssue]:
+        return []
+
+    with pytest.raises(ValueError, match="fail_severity"):
+        verify_evidence({}, {}, rules=[rule], fail_severity="bogus")
 
 
 def test_verify_schema_passes_output_to_each_rule() -> None:

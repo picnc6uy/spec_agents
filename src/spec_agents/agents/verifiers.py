@@ -103,9 +103,10 @@ Verifier = Callable[[], list[VerifierIssue]]
 
 
 def _at_or_above(severity: str, threshold: str) -> bool:
-    """Severity comparison. Unknown severities rank highest (treated as
-    failing) so callers can't accidentally hide a check by typo'ing the
-    severity string."""
+    """Severity comparison. An unknown ISSUE ``severity`` ranks highest (treated as
+    failing) so a typo'd issue severity can't accidentally hide a check. The
+    ``threshold`` is validated upstream by :func:`verify`, so it is always known here —
+    the ``get(threshold, 99)`` fallback is defensive only."""
     return _SEVERITY_RANK.get(severity, 99) >= _SEVERITY_RANK.get(threshold, 99)
 
 
@@ -127,8 +128,19 @@ def verify(
         fail_severity: Issues at or above this severity cause
             ``passed=False``. Default ``"error"``; pass ``"warning"`` to
             fail strict. The rank order is ``info < warning < error <
-            critical``; unknown strings rank highest (treated as fail).
+            critical``. Must be one of those four — an unknown threshold is a
+            caller bug (it would make every issue rank below it and the
+            verification silently pass), so it raises ``ValueError``.
+
+    Raises:
+        ValueError: if ``fail_severity`` is not a known severity. (Issue
+            severities, by contrast, are NOT validated — an unknown issue
+            severity safely ranks highest and fails.)
     """
+    if fail_severity not in _SEVERITY_RANK:
+        raise ValueError(
+            f"unknown fail_severity {fail_severity!r}; expected one of {sorted(_SEVERITY_RANK)}"
+        )
     issues: list[VerifierIssue] = []
     for rule in rules:
         try:
