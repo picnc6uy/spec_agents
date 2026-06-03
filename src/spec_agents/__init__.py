@@ -16,6 +16,8 @@ Submodules:
   logging              - Structured logging setup
   storage              - SQLAlchemy session/engine helpers
   messages             - Generic Pydantic message types
+  tui                  - Reusable terminal-UI kit: declarative blocks rendered
+                         to Rich (terminal) or self-contained offline HTML
   testing              - Test fixtures (in-memory SQLite helper, XR-009)
   usage                - Single-source Anthropic pricing + model_cost_usd
 """

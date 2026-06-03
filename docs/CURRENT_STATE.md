@@ -6,9 +6,22 @@ material things change.
 
 ---
 
-## As of 2026-06-01
+## As of 2026-06-02
 
-**Latest landing:** `verify-fail-severity-guard` (**v0.11.1**, bug-fix) — `verify()` now
+**Latest landing:** `spec_agents.tui` — a reusable, target-agnostic terminal-UI
+kit. Declarative blocks (`View`, `Badge`/`Badges`, `BarRow`/`BarTable`, `Note`,
+`Table`) are described once and rendered to either a Rich terminal view
+(`render_rich`) or a self-contained OFFLINE HTML page (`render_html`, inline CSS
+only — no `src=`/`<script>`/CDN). Operationalizes the house style in
+`planning/terminal-output.md` (semantic tones good/warn/bad/neutral;
+right-justified numbers; 28-cell unicode bars; shared utf-8 / non-legacy
+Console). `rich` is imported lazily so importing the kit needs no extra deps.
+First consumer: `planning/scripts/cost_reconcile.py` now builds its dashboard via
+`build_view(report)` and delegates both `--tui` and `--html` to the kit (its 55
+tests unchanged + green). **Tests:** 121 passing (103 prior + 18 new
+`tests/test_tui.py`).
+
+**Prior landing:** `verify-fail-severity-guard` (**v0.11.1**, bug-fix) — `verify()` now
 validates `fail_severity` at entry and raises `ValueError` on an unknown threshold.
 Previously a typo'd `fail_severity` ranked 99, so no real issue met it and verification
 silently returned `passed=True` (a check that couldn't fail). Issue severities keep the
