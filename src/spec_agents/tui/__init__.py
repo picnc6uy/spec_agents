@@ -38,6 +38,12 @@ from .blocks import (
 from .render_html import render_html
 from .render_rich import render_rich
 
+# Interactive (Textual) renderers. ``textual`` is an OPTIONAL dependency, but
+# render_textual itself imports it only lazily (when called), so importing it
+# here is safe even when textual is absent. The functions raise a clear
+# ImportError at call time if textual is missing.
+from .render_textual import record_browser, render_textual
+
 __all__ = [
     "Badge",
     "Badges",
@@ -52,4 +58,6 @@ __all__ = [
     "tone",
     "render_html",
     "render_rich",
+    "render_textual",
+    "record_browser",
 ]

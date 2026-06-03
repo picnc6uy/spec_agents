@@ -22,6 +22,12 @@ dev = [
     "pyright==1.1.360",  # pinned to match CI so a local `.[dev]` reproduces CI's
                          # type-check result exactly (stack-wide pin, review Open Q5).
 ]
+# Interactive terminal UI (spec_agents.tui.render_textual / record_browser).
+# OPTIONAL — kept out of the hard deps like keyring elsewhere; the kit imports
+# textual lazily and falls back to a clear ImportError when it is absent.
+textual = [
+    "textual>=0.50.0",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/spec_agents"]
