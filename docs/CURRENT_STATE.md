@@ -6,6 +6,20 @@ material things change.
 
 ---
 
+## As of 2026-06-04
+
+**Release:** **v0.12.0 tagged + pushed** — bundles the `tui` kit (Rich + offline-HTML
++ Textual `record_browser` targets) and `secrets.get_secret()` (keyring-first, env
+fallback) on top of v0.11.x (corpus-first caching hooks, `verify()` fail_severity
+guard). v0.11.0 + v0.11.1 were also back-tagged today at their exact commits
+(`b9d7503`, `39c5bb9`). `__init__.__version__` re-synced to pyproject (had lagged at
+"0.10.0" since v0.10.1). Consumers pin via
+`spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.12.0`; `textual` is an
+optional extra (`spec-agents[textual]`) — the kit imports it lazily.
+**Tests:** 130 passing, 1 skipped.
+
+---
+
 ## As of 2026-06-02
 
 **Latest landing:** `spec_agents.tui` — a reusable, target-agnostic terminal-UI
