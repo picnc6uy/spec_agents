@@ -42,6 +42,36 @@ AS_OF_RE = re.compile(r"^## As of (\d{4}-\d{2}-\d{2})", re.MULTILINE)
 
 
 def main() -> int:
+    # Both checks always run so one failure doesn't mask the other.
+    date_rc = _check_date_drift()
+    semantic_rc = _check_semantic_drift()
+    return 1 if (date_rc or semantic_rc) else 0
+
+
+def _check_semantic_drift() -> int:
+    """Run the C1/C2/C3 semantic checks (s-drift-1) from the sibling module.
+
+    check_semantic_drift.py is mirrored alongside this file in each repo.
+    A repo that hasn't received the copy yet warns instead of crashing —
+    the warning is the signal to finish propagation.
+    """
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    try:
+        import check_semantic_drift  # pyright: ignore[reportMissingImports]
+    except ImportError:
+        print(
+            "drift-audit: check_semantic_drift.py not found next to "
+            "check_current_state_drift.py; semantic checks SKIPPED. "
+            "Copy it from planning/agent-task/scripts/.",
+            file=sys.stderr,
+        )
+        return 0
+    finally:
+        sys.path.pop(0)
+    return check_semantic_drift.main(["--repo", "."])
+
+
+def _check_date_drift() -> int:
     if not CURRENT_STATE.is_file():
         return 0
 
