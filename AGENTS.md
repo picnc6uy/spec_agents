@@ -61,23 +61,25 @@ reopening of the posture question.
 
 ## Current state
 
-Tagged `v0.1.0` (2026-05-20). See [docs/CURRENT_STATE.md](docs/CURRENT_STATE.md)
-for the live snapshot (commit, tests, pre-commit posture). Active backlog in
-[../planning/SYSTEM.md](../planning/SYSTEM.md) — primarily SA-002 (critic),
-SA-003 (verifiers), SA-004 (plan-then-act), gated behind the foundation pass.
+Released through **v0.12.0** (the methodology band SA-002/003/004 + eval/batch +
+caching + parallel + secrets + tui all shipped). See
+[docs/CURRENT_STATE.md](docs/CURRENT_STATE.md) for the live snapshot (commit,
+tests, pre-commit posture) and the authoritative current version.
 
 ## Public surface — do not break
 
 - **Adapter ABC** (`spec_agents.ingestion.adapters.base.Adapter`)
-- **Knowledge layer** (`spec_agents.agents.knowledge.lenses`, `.memory`)
+- **Knowledge layer** (`spec_agents.knowledge.lenses`) — note: no `.agents.` prefix, and there is no `.memory` submodule
 - **DB helpers** (`spec_agents.storage`)
-- **Structured logging** (`spec_agents.logging.setup`)
+- **Structured logging** (`from spec_agents.logging import configure_logging`) — flat module, not `logging.setup`
 - **Pydantic message types** (`spec_agents.messages`)
+- **Usage / pricing** (`spec_agents.usage`) · **Caching** (`spec_agents.caching` — `cached_text_block`, `warm_then_fan_out`) · **Secrets** (`spec_agents.secrets.get_secret`) · **TUI** (`spec_agents.tui` — `View`, `render_rich`, `render_html`)
+- **Agent primitives** (`spec_agents.agents` — `critic`, `verifiers`, `plan_then_act`, `parallel.map_agent`) · **Eval** (`spec_agents.eval` — `run_eval`, `batch`)
 
 **Consumers pin via git URL** (XR-005, 2026-05-20):
 
 ```toml
-"spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.1.0",
+"spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.12.0",
 ```
 
 For local dev, override the pin in the consumer venv:
