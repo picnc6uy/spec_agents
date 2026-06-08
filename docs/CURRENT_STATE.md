@@ -6,7 +6,11 @@ material things change.
 
 ---
 
-## As of 2026-06-04
+## As of 2026-06-08
+
+**HEAD + test count:** machine-written in the `planning/START_HERE.md` stack-state
+block (run `git log --oneline -1` and `pytest --collect-only -q` to confirm against
+it). Reviewed 2026-06-08 (planning S3 doc-honesty sweep); content below current as of the v0.12.0 release.
 
 **Release:** **v0.12.0 tagged + pushed** — bundles the `tui` kit (Rich + offline-HTML
 + Textual `record_browser` targets) and `secrets.get_secret()` (keyring-first, env
@@ -16,7 +20,7 @@ guard). v0.11.0 + v0.11.1 were also back-tagged today at their exact commits
 "0.10.0" since v0.10.1). Consumers pin via
 `spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.12.0`; `textual` is an
 optional extra (`spec-agents[textual]`) — the kit imports it lazily.
-**Tests:** 130 passing, 1 skipped.
+**Tests:** green (exact count in the `planning/START_HERE.md` stack-state block; `pytest --collect-only -q` for the precise figure).
 
 ---
 
@@ -183,9 +187,13 @@ execution).
 1. `cd c:/Users/ghendrick/spec_agents`
 2. Read this file (you just did)
 3. Read `AGENTS.md` for the session-start protocol
-4. Drift check: `git log --oneline -1` should match the master commit
-   line above; if not, fix this file first
-5. `python -m pytest -q` should show 103 passing
+4. Drift check: compare `git log --oneline -1` against this repo's line in
+   the generated stack-state block in `planning/START_HERE.md` (HEAD + test
+   count are machine-written there). If this file's prose disagrees, trust
+   git + the block and fix the prose.
+5. `python -m pytest -q` should pass. Don't match a hand-typed count — the
+   exact figure is `python -m pytest --collect-only -q | tail -1`, and the
+   stack-state block carries the at-a-glance number.
 6. Read `planning/SYSTEM.md` §11 for SA-* and XR-010 scope
 7. `git status` should be clean
 8. Ask the operator which task to work on
