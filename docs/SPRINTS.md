@@ -28,7 +28,7 @@ This per-repo file inherits the rules + adds spec_agents-specific guidance.
 
 ## Current cycle posture (as of 2026-05-23)
 
-**Kernel freeze continues.** Per the [cross-stack architect review 03](../../planning/architecture-reviews/2026-05-23-cross-stack-architect-review-03.md),
+**Kernel freeze continues.** Per the [cross-stack architect review 03](../../planning/archive/2026-09-v1-method/architecture-reviews/2026-05-23-cross-stack-architect-review-03.md),
 spec_agents has 3 of 5 primitives with real consumers
 (`eval.batch`, `critic`, `testing.db`) and 2 that are nominal
 (`plan_then_act`, `verifiers`). No consumer is currently asking for
@@ -74,7 +74,7 @@ When both conditions are met, this becomes a candidate sprint.
 ### Cache primitive (if a sibling app demands it)
 
 Surfaced as a v2 lesson from photo_archive's first full-domain delivery
-(see [photo_archive arc review 02](../../planning/architecture-reviews/2026-05-23-photo-archive-arc-review-02.md) §"Lessons to apply to v2").
+(see [photo_archive arc review 02](../../planning/archive/2026-09-v1-method/architecture-reviews/2026-05-23-photo-archive-arc-review-02.md) §"Lessons to apply to v2").
 photo_archive's 3 ad-hoc cache implementations (`DiscogsCache`,
 `DahrCache`, `MbCache`) would benefit from a `spec_agents.cache`
 filesystem-or-SQLite primitive.

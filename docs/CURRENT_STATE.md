@@ -6,11 +6,12 @@ material things change.
 
 ---
 
-## As of 2026-06-08
+## As of 2026-09-05
 
-**HEAD + test count:** machine-written in the `planning/START_HERE.md` stack-state
+**HEAD + test count:** machine-written in the `planning/CURRENT.md` stack-state
 block (run `git log --oneline -1` and `pytest --collect-only -q` to confirm against
-it). Reviewed 2026-06-08 (planning S3 doc-honesty sweep); content below current as of the v0.12.0 release.
+it). Refreshed 2026-09-05 (135 passed at `234857c` + the SPRINTS.md link repoint;
+maintain-only per the focus pivot); content below current as of the v0.12.0 release.
 
 **Release:** **v0.12.0 tagged + pushed** — bundles the `tui` kit (Rich + offline-HTML
 + Textual `record_browser` targets) and `secrets.get_secret()` (keyring-first, env
