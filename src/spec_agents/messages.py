@@ -47,7 +47,7 @@ class AgentMessage(BaseModel):
     def must_have_conditions(cls, v: list[str]) -> list[str]:
         if not v:
             raise ValueError(
-                "invalidation_conditions cannot be empty. " "Every claim must be falsifiable."
+                "invalidation_conditions cannot be empty. Every claim must be falsifiable."
             )
         return v
 

@@ -7,8 +7,9 @@ on:
     branches: ["**"]
 
 # Opt in to Node 24 ahead of GitHub's 2026-06-02 forced switch.
-# actions/checkout@v4 + actions/setup-python@v5 are Node-20-based;
-# this env var tells the runner to execute them on Node 24 instead.
+# actions/checkout@v7 + actions/setup-python@v7 are Node-24 native
+# (stack-tooling-1, 2026-09-10); the env var stays as a harmless belt-and-braces
+# and the planning conformance check still looks for it.
 # Documented at:
 #   github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
 # (ci-node-migration-01 / S1.E2 of dev-plan-30d-revision-01)
@@ -28,10 +29,10 @@ jobs:
         python-version: ["3.12"]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
@@ -42,7 +43,7 @@ jobs:
         # from source. ruff/pyright/detect-secrets are pinned to match
         # what the .pre-commit-config.yaml uses, so CI and pre-commit
         # don't drift on formatting/type rules.
-        run: pip install -e ".[dev]" "ruff==0.8.4" "pyright==1.1.360" "detect-secrets==1.5.0"
+        run: pip install -e ".[dev]" "ruff==0.16.6" "pyright==1.1.411" "detect-secrets==1.5.0"
 
       - name: Lint (ruff)
         run: |

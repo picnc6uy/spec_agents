@@ -6,6 +6,13 @@ material things change.
 
 ---
 
+## As of 2026-09-10 — toolchain refresh (stack-tooling-1)
+
+Stack-wide pin bump, no behaviour change: ruff 0.16.6, pyright 1.1.411,
+pre-commit-hooks v6.0.0, actions/checkout@v7 + setup-python@v7, and the canonical
+six-line `.gitattributes` line-ending policy (evidence: planning
+`.agent/verifications/stack-tooling-1.md`).
+
 ## As of 2026-09-05
 
 **HEAD + test count:** machine-written in the `planning/CURRENT.md` stack-state

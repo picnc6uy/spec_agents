@@ -139,7 +139,7 @@ def _html_bartable(block: BarTable) -> str:
 def _html_note(block: Note) -> str:
     cls = tone(block.tone).html_class
     title = f"<h2>{_esc(block.title)}</h2>\n" if block.title else ""
-    return f"<section>{title}" f'<p class="note {cls}">{_esc(block.text)}</p>' "</section>"
+    return f'<section>{title}<p class="note {cls}">{_esc(block.text)}</p></section>'
 
 
 def _html_table(block: Table) -> str:

@@ -19,7 +19,8 @@ dependencies = [
 dev = [
     "pytest>=8.0.0",
     "pytest-cov>=5.0.0",
-    "pyright==1.1.360",  # pinned to match CI so a local `.[dev]` reproduces CI's
+    "ruff==0.16.6",
+    "pyright==1.1.411",  # pinned to match CI so a local `.[dev]` reproduces CI's
                          # type-check result exactly (stack-wide pin, review Open Q5).
 ]
 # Interactive terminal UI (spec_agents.tui.render_textual / record_browser).
@@ -46,6 +47,13 @@ target-version = "py312"
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
 ignore = ["E501"]
+
+[tool.ruff.lint.per-file-ignores]
+# stack-tooling-1 (ruff 0.16.6): UP046/UP047 want PEP 695 type-parameter syntax on the
+# kernel's generic helpers. The rewrite is mechanical but changes public signature text
+# in a library consumers pin; deferred to a release-bearing sprint.
+"src/spec_agents/agents/parallel.py" = ["UP046", "UP047"]
+"src/spec_agents/caching.py" = ["UP047"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

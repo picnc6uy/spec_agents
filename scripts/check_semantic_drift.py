@@ -138,7 +138,7 @@ def check_branch_in_flight(repo: Path) -> list[Violation]:
             Violation(
                 "C1",
                 str(CURRENT_STATE),
-                f"claims 'Branch in flight: {claimed}' but it is already merged " f"into {default}",
+                f"claims 'Branch in flight: {claimed}' but it is already merged into {default}",
             )
         ]
     return []

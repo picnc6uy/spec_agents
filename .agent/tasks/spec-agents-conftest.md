@@ -62,6 +62,7 @@ Add a single file: `tests/conftest.py`. Five lines:
 Mirrors the pattern used by sibling repos so worktree-based
 agent-task runs find the in-tree code, not the installed wheel.
 """
+
 import sys
 from pathlib import Path
 

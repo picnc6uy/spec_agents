@@ -59,11 +59,11 @@ Two additive, keyword-only, backward-compatible changes. No behavior change on t
 Today: `system = [cached_text_block(shared_system_text)]`. Change to:
 ```python
 if cached_prefix_text is None:
-    system = [cached_text_block(shared_system_text)]            # unchanged default
+    system = [cached_text_block(shared_system_text)]  # unchanged default
 else:
     system = [
-        cached_text_block(cached_prefix_text),                  # stable corpus, the ONLY cached block
-        {"type": "text", "text": shared_system_text},           # per-tier preamble, uncached, varies
+        cached_text_block(cached_prefix_text),  # stable corpus, the ONLY cached block
+        {"type": "text", "text": shared_system_text},  # per-tier preamble, uncached, varies
     ]
 ```
 Anthropic caches the prefix up to the breakpoint, so the corpus block hits regardless of the trailing

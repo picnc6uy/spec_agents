@@ -43,6 +43,11 @@ divergence.
 - **Ruff-format** is the formatter. Never hand-format.
 - **Pyright strict** for `src/`. The pyproject config is checked in; consumers
   inherit it via editable install.
+- **Toolchain pins** (stack-tooling-1, 2026-09-10): `ruff==0.16.6` and
+  `pyright==1.1.411`, exact in `pyproject.toml` `[dev]`; `ruff-pre-commit` rev
+  `v0.16.6` and `pre-commit-hooks` `v6.0.0` in `.pre-commit-config.yaml`; the same
+  ruff/pyright pins in `ci.yml`. Bump all three files together — the planning
+  conformance column `ruff pin=hook` fails when pyproject and the hook disagree.
 
 ## Pre-commit
 

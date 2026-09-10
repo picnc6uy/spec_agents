@@ -61,7 +61,7 @@ def _block_renderables(view: View) -> list[object]:
     header_parts: list[object] = [Text(view.title, style="bold cyan")]
     if view.subtitle:
         header_parts.append(Text(view.subtitle, style="dim"))
-    out.append(Group(*header_parts))
+    out.append(Group(*header_parts))  # pyright: ignore[reportArgumentType]  # rich stubs type Group(*renderables) narrower than the object list we build
 
     for block in view.blocks:
         if isinstance(block, Badges):
@@ -102,7 +102,7 @@ def _ViewApp_factory(view: View):
         TITLE = view.title or "spec_agents.tui"
 
         def compose(self) -> ComposeResult:
-            yield VerticalScroll(Static(Group(*renderables), id="view-body"))
+            yield VerticalScroll(Static(Group(*renderables), id="view-body"))  # pyright: ignore[reportArgumentType]  # rich stubs type Group(*renderables) narrower than the object list we build
 
     app = _ViewApp()
     # Exposed for headless tests — the View this app is showing.
@@ -184,7 +184,7 @@ def _BrowserApp_factory(
             # Expose the current detail View for headless tests (Textual's Static
             # does not surface its content as a public attribute in 8.x).
             self.detail_view = view  # type: ignore[attr-defined]
-            pane.update(Group(*_block_renderables(view)))
+            pane.update(Group(*_block_renderables(view)))  # pyright: ignore[reportArgumentType]  # rich stubs type Group(*renderables) narrower than the object list we build
 
         # Cursor movement in the DataTable -> re-render the detail pane.
         def on_data_table_row_highlighted(self, event) -> None:  # type: ignore[no-untyped-def]
