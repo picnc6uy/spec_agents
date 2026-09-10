@@ -43,7 +43,10 @@ jobs:
         # from source. ruff/pyright/detect-secrets are pinned to match
         # what the .pre-commit-config.yaml uses, so CI and pre-commit
         # don't drift on formatting/type rules.
-        run: pip install -e ".[dev]" "ruff==0.16.6" "pyright==1.1.411" "detect-secrets==1.5.0"
+        # [textual] + keyring: pyright must resolve the optional tui/secrets imports
+        # (lazy at runtime; both live in the local env). CI had been red on
+        # reportMissingImports since v0.12.0 (2026-06-04) until stack-tooling-1 added them.
+        run: pip install -e ".[dev,textual]" keyring "ruff==0.16.6" "pyright==1.1.411" "detect-secrets==1.5.0"
 
       - name: Lint (ruff)
         run: |
