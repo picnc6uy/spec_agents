@@ -10,7 +10,8 @@ material things change.
 _Machine-written by planning `scripts/daily_drift_report.py`; refreshed by the
 daily run. Hand edits here are overwritten. Judgment lives below, under `## As of`.
 The branch line names the last commit that is NOT one of this block's own refreshes
-— what last shipped, not when the job ran; `git log -1` is authoritative._
+— what last shipped, not when the job ran; `git log -1` is authoritative.
+`generated:` marks when these facts last CHANGED, not when the job ran._
 
 - **branch** `master` @ `1f2f9a7` docs(agents): repoint the two archived May documents (age... · 2026-09-11
 - **tests** 135 (static `def test_` count)
