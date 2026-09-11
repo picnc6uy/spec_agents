@@ -1,0 +1,23 @@
+.agent/verification-template-light.md
+  s_bc435bfc5479c9::t_a55bd6dd5fdd91 1-33
+.agent/verification-template.md
+  s_bc435bfc5479c9::t_ce79cfb5238740 31-35
+AGENTS.md
+  s_bc435bfc5479c9::t_2117ed54fc0811 3-12,14-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "dd5b201ab5ed7db4bfebd226d0a0a9df17b2a1ad",
+  "prompts": {},
+  "sessions": {
+    "s_bc435bfc5479c9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d2bcf2dc-57cb-456f-a9a1-14fd60e3b6b0",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
