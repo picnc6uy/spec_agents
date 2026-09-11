@@ -12,3 +12,7 @@ dist/
 venv/
 *.db
 *.sqlite
+
+# Google service-account keys. `*-key.json` does NOT cover the default `service-account.json`
+# name (swarm queue Q-11, 2026-09-11).
+service-account*.json
