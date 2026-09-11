@@ -12,7 +12,7 @@ daily run. Hand edits here are overwritten. Judgment lives below, under `## As o
 The branch line names the last commit that is NOT one of this block's own refreshes
 — what last shipped, not when the job ran; `git log -1` is authoritative._
 
-- **branch** `master` @ `d176dae` chore(gitignore): ignore service-account*.json · 2026-09-11
+- **branch** `master` @ `1f2f9a7` docs(agents): repoint the two archived May documents (age... · 2026-09-11
 - **tests** 135 (static `def test_` count)
 - **pins** ruff 0.16.6 · pyright 1.1.411 · spec_agents: not a consumer
 - **scaffold** .agent/ ok (tasks, verifications, lenses, both templates)
