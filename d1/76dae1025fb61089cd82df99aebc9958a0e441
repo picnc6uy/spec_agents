@@ -1,0 +1,19 @@
+.gitignore
+  s_fa71bd5b747159::t_2851d3c75d9a58 15-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "d176dae1025fb61089cd82df99aebc9958a0e441",
+  "prompts": {},
+  "sessions": {
+    "s_fa71bd5b747159": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "d95e37e6-32c9-4df9-aa93-86038dc81ebb",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
