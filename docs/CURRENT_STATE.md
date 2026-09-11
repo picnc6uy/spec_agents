@@ -23,17 +23,15 @@ generated: 2026-09-11
 
 ## As of 2026-09-10 — toolchain refresh (stack-tooling-1)
 
-Stack-wide pin bump, no behaviour change: ruff 0.16.6, pyright 1.1.411,
-pre-commit-hooks v6.0.0, actions/checkout@v7 + setup-python@v7, and the canonical
-six-line `.gitattributes` line-ending policy (evidence: planning
-`.agent/verifications/stack-tooling-1.md`).
+Stack-wide pin bump, no behaviour change: ruff + pyright (current pins in the
+generated block above), pre-commit-hooks v6.0.0, actions/checkout@v7 +
+setup-python@v7, and the canonical six-line `.gitattributes` line-ending policy
+(evidence: planning `.agent/verifications/stack-tooling-1.md`).
 
 ## As of 2026-09-05
 
-**HEAD + test count:** machine-written in the `planning/CURRENT.md` stack-state
-block (run `git log --oneline -1` and `pytest --collect-only -q` to confirm against
-it). Refreshed 2026-09-05 (135 passed at `234857c` + the SPRINTS.md link repoint;
-maintain-only per the focus pivot); content below current as of the v0.12.0 release.
+Maintain-only per the focus pivot; content below is current as of the v0.12.0
+release.
 
 **Release:** **v0.12.0 tagged + pushed** — bundles the `tui` kit (Rich + offline-HTML
 + Textual `record_browser` targets) and `secrets.get_secret()` (keyring-first, env
@@ -43,7 +41,6 @@ guard). v0.11.0 + v0.11.1 were also back-tagged today at their exact commits
 "0.10.0" since v0.10.1). Consumers pin via
 `spec-agents @ git+https://github.com/picnc6uy/spec_agents@v0.12.0`; `textual` is an
 optional extra (`spec-agents[textual]`) — the kit imports it lazily.
-**Tests:** green (exact count in the `planning/START_HERE.md` stack-state block; `pytest --collect-only -q` for the precise figure).
 
 ---
 
