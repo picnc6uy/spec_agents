@@ -28,6 +28,11 @@ agent: claude-code
 <Anything that came up while doing the task but was outside scope. This is
 the "while I was in here" honesty list. Saying "nothing" is fine if true.>
 
+## Spec interpretation notes
+<Where the implementation reasonably diverged from the spec's literal wording — a
+stronger type than the one named, a reshaped signature, a naming call — and why.
+"None" is fine if the implementation matched the spec text exactly.>
+
 ## Risks for human reviewer
 <1-3 things the reviewer should think about. Concrete, not boilerplate.
 "None identified" is a valid answer.>

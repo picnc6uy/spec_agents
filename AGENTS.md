@@ -1,17 +1,19 @@
 # AGENTS.md — spec_agents
 
-> **Fresh session?** Start at [../planning/HANDOVER.md](../planning/HANDOVER.md) for the
-> canonical session-start brief, then cross-reference architectural posture in
-> [../planning/v2-charter.md](../planning/v2-charter.md) (the v2 charter —
-> committed design rules, propagation tiers, library mode). **Then** read
-> this file and follow the session-start protocol below for spec_agents-specific
-> context.
->
+<!-- planning:reading-order methodology=2026-09-10 — canonical body: planning/agent-task/agent-templates/agents-reading-order.md; do not hand-edit -->
+> **Fresh session?** Read in this order: [../planning/CURRENT.md](../planning/CURRENT.md)
+> (what is true across the stack right now), [../planning/v2-charter.md](../planning/v2-charter.md)
+> (architectural posture; the tiebreak), then this file and `docs/CURRENT_STATE.md`
+> (the repo-specific snapshot). The dev-loop contract is
+> [../planning/agent-task/README.md](../planning/agent-task/README.md): a sprint runs in a
+> worktree from a task spec (`files.touched`, `must-not-touch`, `budget:`), its verification
+> tier — chore / light / full — sets the ceremony, and `/sprint-close` gates the merge on the
+> verification doc. Budget breached, stalled, or a claim you cannot verify → abort to
+> `needs-rework` per [../planning/agent-task/RECOVERY.md](../planning/agent-task/RECOVERY.md).
 > **Drift discipline:** at session start and task close, run the
-> [drift-audit lens](../planning/agent-task/agent-templates/lenses/drift-audit.md)
-> against the docs you're about to trust or just touched. Fix drift first; don't
-> work over stale context.
->
+> [drift-audit lens](../planning/agent-task/agent-templates/lenses/drift-audit.md) against
+> the docs you are about to trust or just touched. Fix drift first; never fake green.
+<!-- /planning:reading-order -->
 
 ---
 
