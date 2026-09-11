@@ -10,13 +10,13 @@ material things change.
 _Machine-written by planning `scripts/daily_drift_report.py`; refreshed by the
 daily run. Hand edits here are overwritten. Judgment lives below, under `## As of`._
 
-- **branch** `master` @ `d176dae` chore(gitignore): ignore service-account*.json · 2026-09-11
+- **branch** `master` @ `9fc0d04` docs(drift): refresh generated repo-facts block · 2026-09-11
 - **tests** 135 (static `def test_` count)
 - **pins** ruff 0.16.6 · pyright 1.1.411 · spec_agents: not a consumer
 - **scaffold** .agent/ ok (tasks, verifications, lenses, both templates)
 - **agent/\*** none
 
-generated: 2026-09-11T08:51
+generated: 2026-09-11T08:53
 <!-- /generated:repo-facts -->
 
 ## As of 2026-09-10 — toolchain refresh (stack-tooling-1)
