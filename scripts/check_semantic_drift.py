@@ -258,7 +258,7 @@ def run_checks(repo: Path) -> list[Violation]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
     parser.add_argument("--repo", type=Path, default=Path("."), help="repo root")
     args = parser.parse_args(argv)
     violations = run_checks(args.repo)
