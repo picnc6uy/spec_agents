@@ -8,15 +8,17 @@ material things change.
 
 <!-- generated:repo-facts (do not hand-edit) -->
 _Machine-written by planning `scripts/daily_drift_report.py`; refreshed by the
-daily run. Hand edits here are overwritten. Judgment lives below, under `## As of`._
+daily run. Hand edits here are overwritten. Judgment lives below, under `## As of`.
+The branch line names the last commit that is NOT one of this block's own refreshes
+— what last shipped, not when the job ran; `git log -1` is authoritative._
 
-- **branch** `master` @ `a6e841b` docs(drift): refresh generated repo-facts block · 2026-09-11
+- **branch** `master` @ `d176dae` chore(gitignore): ignore service-account*.json · 2026-09-11
 - **tests** 135 (static `def test_` count)
 - **pins** ruff 0.16.6 · pyright 1.1.411 · spec_agents: not a consumer
 - **scaffold** .agent/ ok (tasks, verifications, lenses, both templates)
 - **agent/\*** none
 
-generated: 2026-09-11T08:54
+generated: 2026-09-11
 <!-- /generated:repo-facts -->
 
 ## As of 2026-09-10 — toolchain refresh (stack-tooling-1)
