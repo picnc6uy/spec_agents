@@ -1,0 +1,19 @@
+docs/CURRENT_STATE.md
+  s_3a7af03b31ac1c::t_679fcf8f8c4f35 26-29,33-34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "45d030fbe399fbc09044d297a5ce196b6ca3cea7",
+  "prompts": {},
+  "sessions": {
+    "s_3a7af03b31ac1c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "a5eb5825-223e-4d60-9683-2cdfd77fd1a0",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
