@@ -1,0 +1,19 @@
+AGENTS.md
+  s_392cce3d9c7f41::t_e28cea8a98b566 22,33
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "1f2f9a74984e29586675b794e50d026291330f0c",
+  "prompts": {},
+  "sessions": {
+    "s_392cce3d9c7f41": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_392cce3d9c7f41",
+        "model": "unknown"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
