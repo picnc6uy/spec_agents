@@ -1,0 +1,19 @@
+scripts/check_semantic_drift.py
+  s_15bc4eed444c75::t_8143f929b27ebb 261
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "9163e94a348892be16ca788dd1ce4eb5c8779e60",
+  "prompts": {},
+  "sessions": {
+    "s_15bc4eed444c75": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_15bc4eed444c75",
+        "model": "unknown"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
