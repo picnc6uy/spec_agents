@@ -13,7 +13,7 @@ The branch line names the last commit that is NOT one of this block's own refres
 — what last shipped, not when the job ran; `git log -1` is authoritative.
 `generated:` marks when these facts last CHANGED, not when the job ran._
 
-- **branch** `master` @ `55799a2` docs(agents): propagate the tiered reading-order block (m... · 2026-09-16
+- **branch** `master` @ `f884910` docs: crs2-pricing-and-cache-doc-1 shipped; retire the st... · 2026-09-16
 - **tests** 140 (static `def test_` count)
 - **pins** ruff 0.16.6 · pyright 1.1.411 · spec_agents: not a consumer
 - **scaffold** .agent/ ok (tasks, verifications, lenses, both templates)
