@@ -1,0 +1,114 @@
+---
+id: crs2-pricing-and-cache-doc-1
+status: done
+---
+
+# Verification: crs2-pricing-and-cache-doc-1
+
+## Baseline
+- Pre-sprint `pytest -q`: **135 passed**.
+- Post-sprint `pytest -q`: **140 passed** (5 new tests, A9 satisfied).
+
+## Reproduction (bug-fix lens)
+- Defect A: on unmodified `usage.py`, `model_cost_usd("claude-opus-5", ...)` /
+  `"claude-sonnet-5"` / `"claude-fable-5-1"` all raise
+  `KeyError: 'claude-opus-5'` (etc.) because `PRICING_USD_PER_MTOK` had no
+  entries for these three models. Confirmed by inspection of the pre-edit
+  table (only `claude-opus-4-8`, `claude-opus-4-7`, `claude-sonnet-4-6`,
+  `claude-haiku-4-5-20251001` were present) and by the fact that the new tests
+  (`test_opus_5_input_output_and_cache_cost`,
+  `test_sonnet_5_input_output_and_cache_cost`,
+  `test_fable_5_1_input_output_and_cache_cost`,
+  `test_fable_5_1_cache_read_is_flat_not_point_one_x_input`,
+  `test_sonnet_5_is_cheaper_than_sonnet_4_6`) would raise that same `KeyError`
+  against the pre-edit table.
+- Defect B: `parallel.py:88` docstring heading was `**Cross-tier caching**`
+  with a cheap-tier/expensive-tier example, which is factually wrong for
+  Anthropic's model-scoped prompt caches. No test previously asserted
+  docstring content, so this was a pure documentation defect (no failing
+  test to reproduce beyond the wording itself); confirmed by direct reading
+  of `parallel.py:88-95` before editing.
+
+## Fix
+- **A1/A2** — `src/spec_agents/usage.py`: added `claude-opus-5` ($5/$25,
+  $6.25/$0.50), `claude-sonnet-5` ($2/$10, $2.50/$0.20), `claude-fable-5-1`
+  ($10/$50, $12.50/$0.25 flat). Fable's `cache_read` has an inline comment
+  stating it is FLAT, not the module's 0.1x-input rule (0.1x would be $1.00).
+  No existing key's values changed; `model_cost_usd`'s body/docstring
+  untouched (diff-verified below).
+- **A3** — `tests/test_usage.py`: five new tests computing exact
+  `pytest.approx` dollar amounts by hand for all three new models (input,
+  output, cache_creation, cache_read), one isolating Fable's flat
+  cache_read ($0.25, explicitly asserting `!= 1.00`), and one asserting
+  `claude-sonnet-5` < `claude-sonnet-4-6` on identical token counts.
+- **A5** — `test_unknown_model_raises_keyerror` (existing, untouched) still
+  passes; `model_cost_usd`'s body has zero line changes (only the table it
+  reads from changed) — confirmed via `git diff`.
+- **A6** — `parallel.py:88` heading renamed to
+  `**Cross-lens, same-tier caching**`; example replaced with two same-model
+  calls (two reviewer lenses over one corpus); added explicit sentence that
+  Anthropic prompt caches are model-scoped and this pattern must not be used
+  to share a cache across tiers. Inline comment at (now) line ~133
+  cross-referencing the old heading updated to match.
+- **A7** — `grep -ri cross-tier` now returns hits only in: `docs/CURRENT_STATE.md`
+  (line 30, part of the 2026-09-15 session note *describing the spec that was
+  drafted* — historically accurate quoting of the old heading, not a live
+  claim), `.agent/tasks/crs2-pricing-and-cache-doc-1.md` (this sprint's own
+  spec, expected), and the two frozen historical files
+  (`.agent/tasks/code-review-swarm.md`, `.agent/verifications/code-review-swarm.md`)
+  which are explicitly out of scope. The one live-docs assertion
+  (`docs/CURRENT_STATE.md`, the "As of 2026-06-02" landing note, formerly
+  "the cross-tier / shared-lens cases") and both `tests/test_parallel.py`
+  prose references (comment header + docstring, lines ~159/~184) were
+  corrected to "cross-lens, same-tier".
+- **A8** — `git diff` on `parallel.py` shows only the docstring block and the
+  one inline comment changed; the `if cached_prefix_text is None: ... else:
+  ...` block and everything below it is byte-identical. All existing
+  assertions in `tests/test_parallel.py` and `tests/test_usage.py` are
+  unmodified (only comments/docstrings edited there, per A7's allowance).
+- **A9** — `pytest -q` → 140 passed (135 baseline + 5 new), strictly higher.
+
+## Coverage gap noted (bug-fix lens requirement)
+`test_pricing_table_has_all_current_tiers` hardcodes the three OLD model
+names rather than deriving them from any "currently supported" source, so it
+silently missed the three-model gap this sprint fixes — it would pass either
+way regardless of whether new models were priced. **Backlog
+recommendation** (not fixed in this sprint, out of scope): tie that test's
+model list to whatever the codebase treats as "current" (e.g. a
+`CURRENT_MODELS` constant imported from wherever `DEFAULT_PARALLEL_MODEL` or
+similar is defined), so adding a new tier without pricing it fails this test
+automatically instead of relying on a separate `KeyError` surfacing at
+runtime.
+
+## A10 — missing spec.yaml provenance gap
+`planning/ideas/code-review-swarm-v2.spec.yaml`, referenced by the queue
+brief as the source of the new pricing rates, was searched for via
+repo-wide glob/grep in this worktree, the `spec_agents` main checkout, and
+the `planning` working directory, and was **not found** anywhere on disk
+(consistent with the spec's own note that this was confirmed before the spec
+was written). The rates used in this sprint (`claude-opus-5`,
+`claude-sonnet-5`, `claude-fable-5-1`) were sourced directly from the spec's
+acceptance criteria (A1) / queue brief text, which state the exact per-MTok
+figures. No operator `reference_model_tiers` memory entry was available to
+cross-check against in this session. This is a documentation-provenance gap
+in a prior sprint, not something fixed here — flagging per the spec's
+instruction, not blocking acceptance.
+
+## Out-of-scope check
+No code path in `map_agent` or `critique` was found that assumes cross-model
+cache reuse; the defect was purely in the docstring/comment wording, matching
+the spec's "Out of scope" expectation. `critic.py`, `caching.py`, and
+`src/spec_agents/eval/` were not touched.
+
+## Must-not-touch verification
+`git diff --stat` confirms only: `docs/CURRENT_STATE.md`,
+`src/spec_agents/agents/parallel.py`, `src/spec_agents/usage.py`,
+`tests/test_parallel.py`, `tests/test_usage.py` changed (plus this
+verification doc and the already-committed spec file). `critic.py`,
+`caching.py`, `src/spec_agents/eval/`, the two frozen historical `.agent`
+files, and `pyproject.toml` are untouched.
+
+## Final status
+All ten acceptance criteria (A1–A10) satisfied. Full suite green (140
+passed, up from 135). Recommending the backlog coverage-rule note above for
+a future sprint.

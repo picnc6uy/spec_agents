@@ -156,7 +156,7 @@ def test_tools_and_tool_choice_passthrough_only_when_provided() -> None:
     assert client2.messages.calls[0]["tool_choice"] == choice
 
 
-# ── cross-tier caching: cached_prefix_text ───────────────────────────────
+# ── cross-lens, same-tier caching: cached_prefix_text ────────────────────
 
 
 def test_cached_prefix_text_puts_corpus_first_and_preamble_uncached() -> None:
@@ -181,8 +181,8 @@ def test_cached_prefix_text_puts_corpus_first_and_preamble_uncached() -> None:
 
 
 def test_cached_prefix_text_corpus_block_identical_across_differing_preambles() -> None:
-    """The cross-tier cache invariant: same corpus + different preamble → the
-    leading cached block is byte-identical, so the corpus cache is reused."""
+    """The cross-lens, same-tier cache invariant: same corpus + different preamble
+    → the leading cached block is byte-identical, so the corpus cache is reused."""
     breadth = _FakeClient()
     confirm = _FakeClient()
     common = dict(

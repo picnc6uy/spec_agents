@@ -52,6 +52,28 @@ PRICING_USD_PER_MTOK: Final[dict[str, dict[str, float]]] = {
         "cache_creation": 1.25,
         "cache_read": 0.10,
     },
+    "claude-opus-5": {
+        "input": 5.0,
+        "output": 25.0,
+        "cache_creation": 6.25,
+        "cache_read": 0.50,
+    },
+    "claude-sonnet-5": {
+        # Cheaper than claude-sonnet-4-6 ($2/$10 vs $3/$15) — do not assume
+        # monotonically increasing price with model generation.
+        "input": 2.0,
+        "output": 10.0,
+        "cache_creation": 2.50,
+        "cache_read": 0.20,
+    },
+    "claude-fable-5-1": {
+        "input": 10.0,
+        "output": 50.0,
+        "cache_creation": 12.50,
+        # FLAT rate, NOT the module's stated 0.1x-input rule (line 25) — 0.1x
+        # of Fable's $10 input would be $1.00, overstating the real rate 4x.
+        "cache_read": 0.25,
+    },
 }
 
 

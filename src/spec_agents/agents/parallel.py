@@ -85,14 +85,19 @@ def map_agent(
     it — avoiding the concurrent cache-creation storm. Each response is turned into a result
     by ``parse(response)``.
 
-    **Cross-tier caching** (``cached_prefix_text``): when a single large corpus is reused
-    across *several* ``map_agent`` calls that each need a *different* preamble (e.g. a
-    breadth pass and a confirm pass over the same code corpus), pass the corpus as
-    ``cached_prefix_text`` and the per-call preamble as ``shared_system_text``. The corpus
-    then becomes the sole cached block — placed first, with the breakpoint right after it —
-    so it is created once and cache-read by every call regardless of the trailing preamble.
-    Leave it ``None`` (default) to keep the original single-block behavior, where
-    ``shared_system_text`` itself is the cached block.
+    **Cross-lens, same-tier caching** (``cached_prefix_text``): when a single large corpus is
+    reused across *several* ``map_agent`` calls at the *same model* that each need a
+    *different* preamble (e.g. two different reviewer lenses over the same code corpus),
+    pass the corpus as ``cached_prefix_text`` and the per-call preamble as
+    ``shared_system_text``. The corpus then becomes the sole cached block — placed first,
+    with the breakpoint right after it — so it is created once and cache-read by every call
+    regardless of the trailing preamble. Leave it ``None`` (default) to keep the original
+    single-block behavior, where ``shared_system_text`` itself is the cached block.
+
+    Anthropic prompt caches are **model-scoped**: a cache written by one model's call cannot
+    be read by a call at a different model. Do not use this pattern to try to share a cache
+    between tiers (e.g. a cheap-tier breadth pass feeding an expensive-tier confirm pass) —
+    the expensive call will pay full corpus price every time.
 
     Args:
         client: an Anthropic client (or any object with ``messages.create(**kwargs)``).
@@ -126,7 +131,7 @@ def map_agent(
     else:
         # Corpus first as the sole cached block (breakpoint after it), preamble
         # uncached after — so the corpus cache hits across calls with differing
-        # preambles. See the "Cross-tier caching" note in the docstring.
+        # preambles. See the "Cross-lens, same-tier caching" note in the docstring.
         system = [
             cached_text_block(cached_prefix_text),
             {"type": "text", "text": shared_system_text},

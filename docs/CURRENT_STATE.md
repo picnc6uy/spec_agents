@@ -78,7 +78,7 @@ code_review_swarm dogfood review of this repo.
 
 **Prior landing:** `code-review-swarm` sprint A (**v0.11.0**) — two additive,
 backward-compatible caching hooks so one large corpus can be cached **once and
-read across many calls** (the cross-tier / shared-lens cases):
+read across many calls** (the cross-lens, same-tier cases):
 
 - `map_agent(..., cached_prefix_text=...)` — when given, the corpus becomes the
   sole *leading* cached block and `shared_system_text` trails it *uncached*, so a
