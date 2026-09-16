@@ -1,7 +1,8 @@
 # pathfinder-print → a fun, standalone, AI-free desktop tool — plan
 
-**Status:** v3.1, **executed 2026-09-16** — all six sprints are built, tested and pushed to
-`pathfinder-print` as stacked branches (merge in this order with `agent-task close`):
+**Status:** v3.1, **executed and merged 2026-09-16** — all six sprints landed on `pathfinder-print`
+`main` via PR #13 (rebase merge, head `23cc028`, CI green on the pushed SHA). The stacked branches
+were:
 `agent/pp-launcher-1` → `agent/pp-wizard-1` → `agent/pp-wizard-2` → `agent/pp-retro-1` →
 `agent/pp-noai-1` → `agent/pp-portable-1`. Suite 183 → 246 tests, all four gates green on
 every branch. Two operator follow-ups remain: commit the built corpus from the PC
