@@ -22,6 +22,17 @@ The branch line names the last commit that is NOT one of this block's own refres
 generated: 2026-09-16
 <!-- /generated:repo-facts -->
 
+## As of 2026-09-16 — crs2-pricing-and-cache-doc-1 shipped
+
+Both defects the 2026-09-15 spec named are fixed on `master`: `88e1ee8` adds the
+`claude-opus-5` / `claude-sonnet-5` / `claude-fable-5-1` rows to `PRICING_USD_PER_MTOK`
+and renames the misleading "cross-tier caching" docstring; `7095718` and `8512714`
+are the R1 review fixes. Verification: `.agent/verifications/crs2-pricing-and-cache-doc-1.md`
+(ready-to-merge; closed 2026-09-16, recorded in planning's harness-freeze log). No
+version bump: no public-surface change. The repo is otherwise **maintain-only**; it is
+the last public repo in the stack and goes private once the `SPEC_AGENTS_TOKEN`
+fine-grained PAT exists (planning `decisions/2026-09-repo-review-and-slimdown.md` §2a).
+
 ## As of 2026-09-15 — spec drafted for crs2-pricing-and-cache-doc-1
 
 Task spec only (no code change yet): `.agent/tasks/crs2-pricing-and-cache-doc-1.md`
@@ -202,11 +213,10 @@ band has five shipped primitives so far: SA-002 (critic, v0.2.0), XR-010
 wrapper, v0.5.0), **SA-004** (plan-then-act, v0.6.0). Library-mode
 posture proven across critic call, harness loop, zero-token checks,
 async fanout, and two-call orchestration.
-Next-3 in execution order: **POS-003** (personal_os summary critic —
-first SA-002 consumer outside spectacular), **SR-006** (few-shot lens
-upgrade — needs operator-curated run_ids; deferred until then),
-**T-033** (Claude vision pipeline for photo_archive — gated on D-4
-execution).
+_The "Next-3" that used to sit here (POS-003, SR-006, T-033) is retired,
+2026-09-16: POS-003 shipped in personal_os on 2026-05-20, and the other two belong
+to a 2026-06 priority ranking planning retired on 2026-09-16 ("priorities are
+decided at work time"). This repo carries no queued work; it is maintain-only._
 
 ## Known Issues / Cleanup Items
 
