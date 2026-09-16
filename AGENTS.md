@@ -1,14 +1,22 @@
 # AGENTS.md — spec_agents
 
-<!-- planning:reading-order methodology=2026-09-10 — canonical body: planning/agent-task/agent-templates/agents-reading-order.md; do not hand-edit -->
-> **Fresh session?** Read in this order: [../planning/CURRENT.md](../planning/CURRENT.md)
-> (what is true across the stack right now), [../planning/v2-charter.md](../planning/v2-charter.md)
-> (architectural posture; the tiebreak), then this file and `docs/CURRENT_STATE.md`
-> (the repo-specific snapshot). The dev-loop contract is
+<!-- planning:reading-order methodology=2026-09-16 — canonical body: planning/agent-task/agent-templates/agents-reading-order.md; do not hand-edit -->
+> **Fresh session?** The always-read list is three things: this file's own
+> operating sections, the sprint's spec (`.agent/tasks/<id>.md`), and the lens that
+> spec declares. That is all of it — kept under 30 KB deliberately
+> ([../planning/decisions/2026-09-thinking-space.md](../planning/decisions/2026-09-thinking-space.md)).
+> Everything else is read **by name, when you need it**: `docs/CURRENT_STATE.md` for
+> this repo's snapshot, [../planning/CURRENT.md](../planning/CURRENT.md) for live
+> stack state (a generated snapshot, not a document),
+> [../planning/v2-charter.md](../planning/v2-charter.md) as the architectural
+> tiebreak. The dev-loop contract is
 > [../planning/agent-task/README.md](../planning/agent-task/README.md): a sprint runs in a
 > worktree from a task spec (`files.touched`, `must-not-touch`, `budget:`), its verification
 > tier — chore / light / full — sets the ceremony, and `/sprint-close` gates the merge on the
-> verification doc. Budget breached, stalled, or a claim you cannot verify → abort to
+> verification doc **plus an independent review** — the final verdict is written by a party
+> that did not build the branch (R1,
+> [../planning/decisions/2026-09-harness-freeze.md](../planning/decisions/2026-09-harness-freeze.md)).
+> Budget breached, stalled, or a claim you cannot verify → abort to
 > `needs-rework` per [../planning/agent-task/RECOVERY.md](../planning/agent-task/RECOVERY.md).
 > **Drift discipline:** at session start and task close, run the
 > [drift-audit lens](../planning/agent-task/agent-templates/lenses/drift-audit.md) against
