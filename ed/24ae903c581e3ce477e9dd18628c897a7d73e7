@@ -1,0 +1,14 @@
+docs/CURRENT_STATE.md
+  h_8f6df416664fc7 16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "ed24ae903c581e3ce477e9dd18628c897a7d73e7",
+  "prompts": {},
+  "humans": {
+    "h_8f6df416664fc7": {
+      "author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
