@@ -1,0 +1,20 @@
+.agent/verifications/crs2-pricing-and-cache-doc-1.md
+  s_9c5c703655062e::t_24ab1ef94b234e 3,8-43
+  s_9c5c703655062e::t_c1c62dcef9cef2 44
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "720139fe4fb368909ccd12a752b1679e45f5dae0",
+  "prompts": {},
+  "sessions": {
+    "s_9c5c703655062e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "79236c18-7585-48d7-9940-2284fa82ee1f",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
