@@ -1,0 +1,31 @@
+tests/test_usage.py
+  s_41ebb8fd8953b0::t_a217e49f7ae8e5 43-107
+.agent/verifications/crs2-pricing-and-cache-doc-1.md
+  s_41ebb8fd8953b0::t_785ff01899652a 1-114
+src/spec_agents/agents/parallel.py
+  s_41ebb8fd8953b0::t_2e307ca22b7121 134
+  s_41ebb8fd8953b0::t_027cef38be36af 88-100
+docs/CURRENT_STATE.md
+  s_41ebb8fd8953b0::t_82a83a95631e35 81
+src/spec_agents/usage.py
+  s_41ebb8fd8953b0::t_a589e13f6f2870 55-76
+tests/test_parallel.py
+  s_41ebb8fd8953b0::t_57efa15bfe29bd 184-185
+  s_41ebb8fd8953b0::t_39274f221af6df 159
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "88e1ee8222bee5701c671593ad402690f3cf0c27",
+  "prompts": {},
+  "sessions": {
+    "s_41ebb8fd8953b0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "76cfd5b6-59c7-4377-9d88-2799196d03c5",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
