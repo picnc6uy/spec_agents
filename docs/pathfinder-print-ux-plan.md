@@ -1,7 +1,10 @@
 # pathfinder-print → a fun, standalone, AI-free desktop tool — plan
 
-**Status:** v3.1, **executed and merged 2026-09-16** — all six sprints landed on `pathfinder-print`
-`main` via PR #13 (rebase merge, head `23cc028`, CI green on the pushed SHA). The stacked branches
+**Status:** v3.1, **executed, merged and released 2026-09-16** — all six sprints landed on
+`pathfinder-print` `main` via PR #13 (rebase merge, CI green on the pushed SHA); the spells corpus
+was committed from the operator's PC (P-13, `19c793a`); tag `v0.2.0` published
+`pathfinder-print-v0.2.0.zip` (61 entries, corpus and launcher inside, no dev files; verified by
+download). Open: the operator's print measurement, v1.5's exit condition. The stacked branches
 were:
 `agent/pp-launcher-1` → `agent/pp-wizard-1` → `agent/pp-wizard-2` → `agent/pp-retro-1` →
 `agent/pp-noai-1` → `agent/pp-portable-1`. Suite 183 → 246 tests, all four gates green on
