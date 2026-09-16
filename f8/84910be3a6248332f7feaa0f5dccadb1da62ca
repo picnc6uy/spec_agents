@@ -1,0 +1,19 @@
+docs/CURRENT_STATE.md
+  s_501bafd3150c6b::t_5bad86ede54f58 25-35,216-219
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f884910be3a6248332f7feaa0f5dccadb1da62ca",
+  "prompts": {},
+  "sessions": {
+    "s_501bafd3150c6b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "dd5bbc97-0706-44fe-b788-4354dffcf33f",
+        "model": "claude-fable-5-1"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
