@@ -22,6 +22,15 @@ The branch line names the last commit that is NOT one of this block's own refres
 generated: 2026-09-11
 <!-- /generated:repo-facts -->
 
+## As of 2026-09-15 — spec drafted for crs2-pricing-and-cache-doc-1
+
+Task spec only (no code change yet): `.agent/tasks/crs2-pricing-and-cache-doc-1.md`
+targets two live defects — `PRICING_USD_PER_MTOK` (usage.py) has no rows for
+`claude-opus-5` / `claude-sonnet-5` / `claude-fable-5-1`, and `parallel.py`'s
+`cached_prefix_text` docstring is headed "Cross-tier caching" but Anthropic
+prompt caches are model-scoped, so the docstring's own example (cheap-tier
+breadth, expensive-tier confirm) would not actually share a cache.
+
 ## As of 2026-09-10 — toolchain refresh (stack-tooling-1)
 
 Stack-wide pin bump, no behaviour change: ruff + pyright (current pins in the
