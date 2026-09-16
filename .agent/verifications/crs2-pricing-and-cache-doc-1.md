@@ -1,9 +1,46 @@
 ---
 id: crs2-pricing-and-cache-doc-1
-status: done
+status: needs-rework
 ---
 
 # Verification: crs2-pricing-and-cache-doc-1
+
+## Re-verification result (2026-09-15, honest-status pass)
+**status: needs-rework** — RECOVERY.md trigger: an acceptance-criterion gate
+that was claimed green is actually red.
+
+- **A2 is FALSE.** A2 requires: "Grep for the comment: `grep -n 'flat'
+  src/spec_agents/usage.py` must return a hit inside or immediately above the
+  `claude-fable-5-1` block." The comment as written uses `FLAT` (uppercase):
+  `src/spec_agents/usage.py:75` — `# FLAT rate, NOT the module's stated
+  0.1x-input rule (line 25) ...`. Running the exact required command,
+  `grep -n 'flat' src/spec_agents/usage.py`, returns **zero hits** (case-sensitive,
+  no `-i`) — confirmed directly against the current worktree. The prior
+  verification doc (below, `status: done`) asserted "A1/A2 satisfied" without
+  ever running this literal command; that was a fabricated/unverified pass.
+- What is done: A1 (three pricing rows), A3 (arithmetic tests), A4
+  (sonnet-5 < sonnet-4-6 test), A5 (unknown-model contract), A6 (docstring
+  renamed in parallel.py), A8 (no behavioral change), A9 (140 passed, up from
+  135 baseline), A10 (provenance gap noted) all appear correctly implemented
+  and were spot-checked against the current file contents in this pass.
+- What is left: change the `FLAT` comment at `src/spec_agents/usage.py:75`
+  (or add a second lowercase-safe mention) so that `grep -n 'flat'
+  src/spec_agents/usage.py` (no `-i` flag, as literally specified in A2)
+  returns a hit — e.g. reword to lower/mixed case containing "flat" verbatim,
+  such as "flat rate" instead of "FLAT rate", or add a lowercase clause. Then
+  re-run the full suite and re-confirm A9's count, and re-run the exact A2
+  grep command before marking ready-to-merge again.
+- Secondary, non-blocking observation for the next pass: `docs/CURRENT_STATE.md:30`
+  still contains the string "Cross-tier caching" in a session note describing
+  the pre-fix defect; it does not assert cross-model cache sharing works, so
+  it satisfies A7's "OR every remaining hit ... confirmed not to assert
+  cross-model cache sharing" branch, but a future editor should not assume
+  this line is a leftover bug — it was intentionally left as historical
+  narration of the drafted spec, not the live docstring claim.
+
+---
+
+# Prior (unverified) pass — status was incorrectly recorded as `done`
 
 ## Baseline
 - Pre-sprint `pytest -q`: **135 passed**.
