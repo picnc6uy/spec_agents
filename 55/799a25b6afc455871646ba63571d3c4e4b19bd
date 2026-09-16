@@ -1,0 +1,19 @@
+AGENTS.md
+  s_04671ba2774f9c::t_89795b1591b54f 3-12,16-19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "55799a25b6afc455871646ba63571d3c4e4b19bd",
+  "prompts": {},
+  "sessions": {
+    "s_04671ba2774f9c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "972c94c8-90b0-4563-970c-c89710f275dd",
+        "model": "claude-opus-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
