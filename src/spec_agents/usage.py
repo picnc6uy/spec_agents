@@ -70,7 +70,7 @@ PRICING_USD_PER_MTOK: Final[dict[str, dict[str, float]]] = {
         "input": 10.0,
         "output": 50.0,
         "cache_creation": 12.50,
-        # FLAT rate, NOT the module's stated 0.1x-input rule (line 25) — 0.1x
+        # flat rate, NOT the module's stated 0.1x-input rule (line 25) — 0.1x
         # of Fable's $10 input would be $1.00, overstating the real rate 4x.
         "cache_read": 0.25,
     },
