@@ -82,7 +82,9 @@ read across many calls** (the cross-lens, same-tier cases):
 
 - `map_agent(..., cached_prefix_text=...)` — when given, the corpus becomes the
   sole *leading* cached block and `shared_system_text` trails it *uncached*, so a
-  breadth pass and a confirm pass over the same corpus share one cache entry.
+  breadth pass and a confirm pass over the same corpus **on the same model**
+  share one cache entry (prompt caches are model-scoped; a cross-tier pairing
+  still pays `cache_creation` on the second call, not `cache_read`).
   Default `None` preserves the original single-cached-block behavior.
 - `critique(..., lens_first=True)` — places the cached lens block *before* the
   rules block, so a synthesizer and its paired challenger (different rules, same

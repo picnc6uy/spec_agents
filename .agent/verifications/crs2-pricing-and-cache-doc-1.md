@@ -12,6 +12,14 @@ A2's literal command) now returns a hit. Full suite re-run: `pytest -q` ->
 (A1, A3-A10) were already confirmed correct in the prior re-verification
 pass below.
 
+`/code-review` (R1) then found one residual doc-precision issue:
+`docs/CURRENT_STATE.md:84`'s example ("a breadth pass and a confirm pass over
+the same corpus share one cache entry") kept the old ambiguous framing two
+lines below the just-corrected heading, with no same-model qualifier --
+exactly the misunderstanding this sprint's `parallel.py` fix exists to
+prevent. Fixed: added "on the same model" plus a one-clause note that a
+cross-tier pairing still pays `cache_creation`, not `cache_read`.
+
 # Verification: crs2-pricing-and-cache-doc-1
 
 ## Re-verification result (2026-09-15, honest-status pass)
