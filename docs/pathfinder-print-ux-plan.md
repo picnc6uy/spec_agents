@@ -1,6 +1,12 @@
 # pathfinder-print → a fun, standalone, AI-free desktop tool — plan
 
-**Status:** draft v3.1 for operator review · **Date:** 2026-09-16 · **Branch:**
+**Status:** v3.1, **executed 2026-09-16** — all six sprints are built, tested and pushed to
+`pathfinder-print` as stacked branches (merge in this order with `agent-task close`):
+`agent/pp-launcher-1` → `agent/pp-wizard-1` → `agent/pp-wizard-2` → `agent/pp-retro-1` →
+`agent/pp-noai-1` → `agent/pp-portable-1`. Suite 183 → 246 tests, all four gates green on
+every branch. Two operator follow-ups remain: commit the built corpus from the PC
+(`python pfp.py --check`, then `git add web/data/*.json.gz`, P-13) and, after merging,
+`git tag v0.2.0 && git push --tags` to publish the first zip. Original status line follows. · **Date:** 2026-09-16 · **Branch:**
 `claude/pathfinder-card-engine-ux-p2ag63` (spec_agents) · **Target repo:** `pathfinder-print`
 
 Written against the real code (`picnc6uy/pathfinder-print` @ `b9101bc`, attached
