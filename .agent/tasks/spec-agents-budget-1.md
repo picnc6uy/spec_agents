@@ -74,3 +74,19 @@ Today both pools default to a hard-coded six whatever the machine. Source: plann
 - QUESTION (P1's default applies unless the driver answers otherwise): a bad explicit value (`SPEC_AGENTS_WORKERS=abc`,
   `0`, or `workers(0)`) raises ValueError naming its source, or falls back to the machine default? Recommended: raise,
   as v0.11.1's fail_severity guard does, so a typo never passes silently.
+
+## Round 2 (2026-10-02, driver orchestrator [07dbfb]; review reviews/2026-10-02-spec-agents-budget-1-r1.md, amend at cb0cb47)
+
+Round 1's P1-P3 stand as built (the review measured them: 11 mutations caught, explicit callers byte-identical,
+the pytest process's priority unchanged). This round makes two more things true and nothing else:
+
+- R2-1 (blocker; CI runs `pyright` on ubuntu-latest). pyright 1.1.411 reports 0 errors on src/ and tests/ under
+  BOTH `--pythonplatform Linux` and `--pythonplatform Windows`. Measured at cb0cb47: Linux 1 error
+  (budget.py:74 `"windll" is not a known attribute of module "ctypes"`), Windows 0. The Notes' rule already says
+  why: only a `sys.platform` check narrows `ctypes.windll` for pyright. test_budget.py stays green and every
+  round-1 refusal path still returns False without raising. The verification doc pastes both platform runs.
+- R2-2. docs/CURRENT_STATE.md's `## As of 2026-10-02` section describes what shipped (spec_agents.budget,
+  `SPEC_AGENTS_WORKERS`, the two defaults), not "Task spec only".
+
+Not in this round (follow-ups, stop rule): the env parse accepting `+3`, `1_000`, Unicode digits and huge ints;
+adding `--pythonplatform Linux` to the repo's own gate list.
