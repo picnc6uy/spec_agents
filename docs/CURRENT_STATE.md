@@ -22,12 +22,16 @@ The branch line names the last commit that is NOT one of this block's own refres
 generated: 2026-09-16
 <!-- /generated:repo-facts -->
 
-## As of 2026-10-02 - spec drafted for spec-agents-budget-1
+## As of 2026-10-02 - spec-agents-budget-1 shipped
 
-Task spec only (no code change yet): `.agent/tasks/spec-agents-budget-1.md` adds
-`spec_agents.budget` (`workers()`, `below_normal()`) and points the two hard-coded
-`max_workers=6` defaults (`caching.py`, `agents/parallel.py`) at `workers()`. No version
-bump and no consumer bump: the consumers stay on v0.12.0 (operator cut, 2026-10-02).
+`spec_agents.budget` is new: `workers(explicit=None)` sizes a fan-out pool (the argument, then
+`SPEC_AGENTS_WORKERS`, then `max(1, os.cpu_count() - 4)`; a bad explicit value raises
+ValueError) and `below_normal()` lowers the process's own priority (never raises; returns
+False on refusal). `warm_then_fan_out` (`caching.py`) and `map_agent` (`agents/parallel.py`)
+now default `max_workers` to None and size the pool from `workers()`; a caller passing
+`max_workers` gets today's pool. Nothing inside spec_agents calls `below_normal()`.
+Verification: `.agent/verifications/spec-agents-budget-1.md`. No version bump and no consumer
+bump: the consumers stay on v0.12.0 (operator cut, 2026-10-02).
 
 ## As of 2026-09-16 — crs2-pricing-and-cache-doc-1 shipped
 

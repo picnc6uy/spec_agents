@@ -69,6 +69,8 @@ def _below_normal_windows() -> bool:
             return True
         proc.nice(_WIN_BELOW_NORMAL)
         return True
+    if sys.platform != "win32":  # narrows ctypes.windll for pyright on every platform
+        return False
     import ctypes
 
     kernel32 = ctypes.windll.kernel32
