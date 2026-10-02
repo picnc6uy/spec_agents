@@ -1,0 +1,21 @@
+.agent/tasks/spec-agents-budget-1.md
+  s_1a3857199337ac::t_0880fa30404fce 1-76
+docs/CURRENT_STATE.md
+  s_1a3857199337ac::t_efd381307b0478 25-31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f09551bee11c162695d0169534922d5dc2d1fac4",
+  "prompts": {},
+  "sessions": {
+    "s_1a3857199337ac": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b13fe02f-e627-4b4b-ba2a-e4092cf3b7d3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
