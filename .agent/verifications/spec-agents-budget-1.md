@@ -39,6 +39,24 @@ Interpreter for every gate: `C:\Users\ghendrick\AppData\Local\Programs\Python\Py
   - **Divergence from the spec's mutation claim:** the subprocess "twice" test does not catch removal of the at-or-below check on Windows. A second `SetPriorityClass(0x4000)` is a no-op, so both readings still match. The fake-backed tests catch it.
 - [x] P3 pool defaults. Evidence: `test_warm_then_fan_out_default_uses_budget`, `test_map_agent_default_uses_budget` (`SPEC_AGENTS_WORKERS=2` set after import, 5 tasks, warm=False, pool recorded as `[2]`) and the `_explicit_wins` pair (`[4]`). Both signatures now read `max_workers: int | None = None`.
 
+## Round 2 (R2-1, R2-2)
+Interpreter: `C:\Users\ghendrick\AppData\Local\Programs\Python\Python312\python.exe`, `PYTHONPATH=src`, commit 574d56b. No `SKIP=`; pre-commit hooks passed.
+- R2-1: `budget._below_normal_windows` returns False behind an `if sys.platform != "win32"` guard before `ctypes.windll`, which narrows it for pyright on every platform. Refusal paths still return False without raising.
+  ```
+  pyright --pythonpath <interpreter> --pythonplatform Linux   -> 0 errors, 0 warnings, 0 informations
+  pyright --pythonpath <interpreter> --pythonplatform Windows -> 0 errors, 0 warnings, 0 informations
+  ruff check .            -> All checks passed!
+  ruff format --check .   -> 94 files already formatted
+  pytest -q               -> 172 passed in 5.12s
+  ```
+- R2-2: `docs/CURRENT_STATE.md` `## As of 2026-10-02` now reads "spec-agents-budget-1 shipped" and describes `spec_agents.budget`, `SPEC_AGENTS_WORKERS` and the two defaults.
+- Round-2 self-review (`/code-review high`, detached copy `$env:TEMP\review-spec-agents-budget-1`, removed; `origin/master...HEAD`). Nothing fixed; all left, with reasons:
+  - cpu_count-4 default too low for network-bound pools / ignores affinity: the spec's P1 verbatim (already raised to the driver).
+  - workers() resolved before `if pending`, so a bad env var raises even with no pool: deliberate round-1 fix (fail before a paid warm call).
+  - Explicit `max_workers` not validated (0 clamps to 1): the spec requires today's behavior for explicit callers.
+  - os.nice is per-thread on Linux; psutil/ctypes duplication; broad int() parsing (`1_0`, `+3`): the parse is a listed follow-up; the rest is out of scope.
+  - Child PYTHONPATH overwrite in the real-process test; caching->budget import coupling: minor, left.
+
 ## Out-of-scope confirmation
 - [x] No files in `files.must-not-touch` were modified. Evidence: the diff list above has no pyproject.toml, ci.yml, tests/test_caching.py, tests/test_parallel.py or scripts/bump_consumers.py. `__version__` stays 0.12.0 and the repo-facts block is untouched.
 
@@ -72,7 +90,7 @@ Left, with reason:
 - The psutil path was exercised only with fakes in-process plus the real child, and psutil is installed in this box's Python312. The ctypes fallback is covered by fakes only (the real-read in the child used ctypes, but the set path ran through psutil).
 
 ## Documentation drift (per the drift-audit lens)
-- [ ] `docs/CURRENT_STATE.md` still says "Task spec only (no code change yet)" in the spec commit's `## As of` section; driver to refresh at merge.
+- [x] `docs/CURRENT_STATE.md` `## As of 2026-10-02` now says what shipped (R2-2).
 - [x] No cross-repo claims affected.
 - [x] No memory entries affected.
 - [x] Path references unchanged.
