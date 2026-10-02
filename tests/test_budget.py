@@ -223,7 +223,7 @@ def test_below_normal_real_process_twice():
     assert (r1, r2) == ("True", "True")
     assert a == b
     if sys.platform == "win32":
-        assert a == "0x4000"
+        assert a in ("0x40", "0x4000")  # an IDLE parent is correctly left alone
     else:
         assert int(a) >= 10
 
@@ -298,3 +298,17 @@ def test_map_agent_explicit_wins(monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setenv("SPEC_AGENTS_WORKERS", "2")
     _map(4)
     assert seen == [4]
+
+
+def test_bad_variable_fails_before_warm_call(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setenv("SPEC_AGENTS_WORKERS", "abc")
+    calls: list[int] = []
+    with pytest.raises(ValueError, match="SPEC_AGENTS_WORKERS"):
+        caching.warm_then_fan_out([1, 2, 3], calls.append, warm=True)
+    assert calls == []
+
+
+@pytest.mark.parametrize("bad", [True, 2.9, float("inf")])
+def test_workers_rejects_bool_and_float(bad: object):
+    with pytest.raises(ValueError, match="workers"):
+        budget.workers(bad)  # type: ignore[arg-type]

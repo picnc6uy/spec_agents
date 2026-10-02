@@ -18,27 +18,17 @@ _RESERVED_CORES = 4
 
 _WIN_IDLE = 0x40
 _WIN_BELOW_NORMAL = 0x4000
-_WIN_NORMAL = 0x20
-_WIN_ABOVE_NORMAL = 0x8000
-_WIN_HIGH = 0x80
-_WIN_REALTIME = 0x100
-# Windows priority classes, lowest to highest (the numeric values are not ordered).
-_WIN_RANK = (
-    _WIN_IDLE,
-    _WIN_BELOW_NORMAL,
-    _WIN_NORMAL,
-    _WIN_ABOVE_NORMAL,
-    _WIN_HIGH,
-    _WIN_REALTIME,
-)
+_WIN_AT_OR_BELOW = frozenset({_WIN_IDLE, _WIN_BELOW_NORMAL})
 
 _POSIX_NICENESS = 10
 
 
 def _parse_workers(value: object, source: str) -> int:
+    if isinstance(value, (bool, float)):
+        raise ValueError(f"{source} must be an integer >= 1, got {value!r}")
     try:
         n = int(value)  # type: ignore[call-overload]
-    except (TypeError, ValueError):
+    except (TypeError, ValueError, OverflowError):
         raise ValueError(f"{source} must be an integer >= 1, got {value!r}") from None
     if n < 1:
         raise ValueError(f"{source} must be an integer >= 1, got {value!r}")
@@ -75,7 +65,7 @@ def _below_normal_windows() -> bool:
     if psutil is not None:
         proc = psutil.Process()
         current = int(proc.nice())
-        if current in _WIN_RANK and _WIN_RANK.index(current) <= 1:
+        if current in _WIN_AT_OR_BELOW:
             return True
         proc.nice(_WIN_BELOW_NORMAL)
         return True
@@ -85,7 +75,7 @@ def _below_normal_windows() -> bool:
     # -1 is the current-process pseudo-handle; c_void_p keeps all 64 bits (a bare int is passed as a C int).
     handle = ctypes.c_void_p(-1)
     current = int(kernel32.GetPriorityClass(handle))
-    if current in _WIN_RANK and _WIN_RANK.index(current) <= 1:
+    if current in _WIN_AT_OR_BELOW:
         return True
     return bool(kernel32.SetPriorityClass(handle, _WIN_BELOW_NORMAL))
 

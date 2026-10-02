@@ -109,6 +109,8 @@ def warm_then_fan_out(
     if n == 0:
         return []
 
+    # Resolve before the warm call so a bad SPEC_AGENTS_WORKERS fails with no API spend.
+    cap = budget.workers() if max_workers is None else max_workers
     out: dict[int, R] = {}
     if warm:
         out[0] = run(tasks[0])
@@ -117,7 +119,6 @@ def warm_then_fan_out(
         pending = list(range(n))
 
     if pending:
-        cap = budget.workers() if max_workers is None else max_workers
         workers = max(1, min(cap, len(pending)))
         with ThreadPoolExecutor(max_workers=workers) as executor:
             futures = {executor.submit(run, tasks[i]): i for i in pending}
