@@ -1,0 +1,21 @@
+src/spec_agents/budget.py
+  s_f7101c7536e927::t_52153a92adf4da 72-73
+docs/CURRENT_STATE.md
+  s_f7101c7536e927::t_d5e11388b4cedf 25-34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "574d56bb73e62b672518188bc1739211b030e2c8",
+  "prompts": {},
+  "sessions": {
+    "s_f7101c7536e927": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7f5a9fb1-299a-4501-8bca-aec76fa6c992",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
