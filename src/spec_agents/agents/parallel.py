@@ -73,7 +73,7 @@ def map_agent(
     max_tokens: int = 2048,
     tools: list[Any] | None = None,
     tool_choice: dict[str, Any] | None = None,
-    max_workers: int = 6,
+    max_workers: int | None = None,
     warm: bool = True,
 ) -> MapResult[R]:
     """Run one model call per item, fanned out over a warmed shared cache.
@@ -114,7 +114,8 @@ def map_agent(
         model: defaults to Haiku (:data:`DEFAULT_PARALLEL_MODEL`).
         max_tokens: per-call response budget.
         tools / tool_choice: forwarded to ``messages.create`` only when provided.
-        max_workers: fan-out thread-pool cap.
+        max_workers: fan-out thread-pool cap; ``None`` (default) sizes it from
+            :func:`spec_agents.budget.workers` at call time.
         warm: warm the shared cache with ``items[0]`` before fanning out the rest. Set
             False only when items do NOT share the cached prefix.
 

@@ -83,7 +83,7 @@ tests, pre-commit posture) and the authoritative current version.
 - **DB helpers** (`spec_agents.storage`)
 - **Structured logging** (`from spec_agents.logging import configure_logging`) — flat module, not `logging.setup`
 - **Pydantic message types** (`spec_agents.messages`)
-- **Usage / pricing** (`spec_agents.usage`) · **Caching** (`spec_agents.caching` — `cached_text_block`, `warm_then_fan_out`) · **Secrets** (`spec_agents.secrets.get_secret`) · **TUI** (`spec_agents.tui` — `View`, `render_rich`, `render_html`)
+- **Usage / pricing** (`spec_agents.usage`) · **Budget** (`spec_agents.budget` — `workers`, `below_normal`) · **Caching** (`spec_agents.caching` — `cached_text_block`, `warm_then_fan_out`) · **Secrets** (`spec_agents.secrets.get_secret`) · **TUI** (`spec_agents.tui` — `View`, `render_rich`, `render_html`)
 - **Agent primitives** (`spec_agents.agents` — `critic`, `verifiers`, `plan_then_act`, `parallel.map_agent`) · **Eval** (`spec_agents.eval` — `run_eval`, `batch`)
 
 **Consumers pin via git URL** (XR-005, 2026-05-20):
