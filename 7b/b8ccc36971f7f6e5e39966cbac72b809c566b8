@@ -1,0 +1,23 @@
+tests/test_budget.py
+  s_fdc8b59cc68612::t_d1d6649fbeaa90 226,301-314
+src/spec_agents/caching.py
+  s_fdc8b59cc68612::t_d1d6649fbeaa90 112-113
+src/spec_agents/budget.py
+  s_fdc8b59cc68612::t_d1d6649fbeaa90 21,27-28,31,68,78
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "7bb8ccc36971f7f6e5e39966cbac72b809c566b8",
+  "prompts": {},
+  "sessions": {
+    "s_fdc8b59cc68612": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "274e9d9a-1537-46a0-86a8-85d0e8dc6890",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
