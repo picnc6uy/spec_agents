@@ -1,0 +1,34 @@
+src/spec_agents/budget.py
+  s_fdc8b59cc68612::t_fae5224b93dd37 1-113
+AGENTS.md
+  s_fdc8b59cc68612::t_e2fc8fb3a0a16f 86
+src/spec_agents/__init__.py
+  s_fdc8b59cc68612::t_e2fc8fb3a0a16f 11
+src/spec_agents/caching.py
+  s_fdc8b59cc68612::t_95f197f5c4a582 40
+  s_fdc8b59cc68612::t_475c7001a28bbe 76
+  s_fdc8b59cc68612::t_e2fc8fb3a0a16f 97-98,120-121
+  s_fdc8b59cc68612::t_8284de287b3408 41
+src/spec_agents/agents/parallel.py
+  s_fdc8b59cc68612::t_475c7001a28bbe 76
+  s_fdc8b59cc68612::t_e2fc8fb3a0a16f 117-118
+tests/test_budget.py
+  s_fdc8b59cc68612::t_23503a485fbd81 156,159,203
+  s_fdc8b59cc68612::t_bf02c4e3a3bf9c 1-155,157-158,160-202,204-300
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "98b2ac637ae4eba0462a8fbfb7a25574c1bd7398",
+  "prompts": {},
+  "sessions": {
+    "s_fdc8b59cc68612": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "274e9d9a-1537-46a0-86a8-85d0e8dc6890",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
