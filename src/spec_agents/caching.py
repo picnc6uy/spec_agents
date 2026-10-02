@@ -37,6 +37,8 @@ from collections.abc import Callable, Sequence
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Any, TypeVar
 
+from spec_agents import budget
+
 __all__ = [
     "cached_text_block",
     "is_cache_churning",
@@ -71,7 +73,7 @@ def warm_then_fan_out(
     tasks: Sequence[T],
     run: Callable[[T], R],
     *,
-    max_workers: int = 6,
+    max_workers: int | None = None,
     warm: bool = True,
 ) -> list[R]:
     """Run ``run(task)`` for every task, preserving input order in the result.
@@ -92,7 +94,8 @@ def warm_then_fan_out(
         run: ``task -> result``. Must be thread-safe with respect to anything it
             closes over. The Anthropic SDK client is safe for concurrent
             ``messages.create``.
-        max_workers: cap on the fan-out thread pool.
+        max_workers: cap on the fan-out thread pool; ``None`` (default) sizes it from
+            :func:`spec_agents.budget.workers` at call time.
         warm: warm the shared cache with ``tasks[0]`` before fanning out the rest.
 
     Returns:
@@ -106,6 +109,8 @@ def warm_then_fan_out(
     if n == 0:
         return []
 
+    # Resolve before the warm call so a bad SPEC_AGENTS_WORKERS fails with no API spend.
+    cap = budget.workers() if max_workers is None else max_workers
     out: dict[int, R] = {}
     if warm:
         out[0] = run(tasks[0])
@@ -114,7 +119,7 @@ def warm_then_fan_out(
         pending = list(range(n))
 
     if pending:
-        workers = max(1, min(max_workers, len(pending)))
+        workers = max(1, min(cap, len(pending)))
         with ThreadPoolExecutor(max_workers=workers) as executor:
             futures = {executor.submit(run, tasks[i]): i for i in pending}
             for future in as_completed(futures):

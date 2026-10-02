@@ -8,6 +8,7 @@ Submodules:
   agents               - Agent-side primitives: critic (SA-002), verifiers
                          (SA-003), plan-then-act (SA-004), parallel.map_agent
                          (Haiku-parallel item processing over a warmed cache)
+  budget               - Machine-fit pool sizing (workers) + below_normal() priority
   caching              - Token-wise prompt-cache helpers: cached_text_block +
                          warm_then_fan_out (avoid concurrent cache-miss storms)
   eval                 - Eval-harness runner (XR-010)
