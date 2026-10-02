@@ -1,0 +1,19 @@
+.agent/verifications/spec-agents-budget-1.md
+  s_fdc8b59cc68612::t_081e6dfa181a31 1-84
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "cb0cb4733ab97d57eaaf3f3cbe283c9a5cf729b3",
+  "prompts": {},
+  "sessions": {
+    "s_fdc8b59cc68612": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "274e9d9a-1537-46a0-86a8-85d0e8dc6890",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
