@@ -22,6 +22,13 @@ The branch line names the last commit that is NOT one of this block's own refres
 generated: 2026-09-16
 <!-- /generated:repo-facts -->
 
+## As of 2026-10-02 - spec drafted for spec-agents-budget-1
+
+Task spec only (no code change yet): `.agent/tasks/spec-agents-budget-1.md` adds
+`spec_agents.budget` (`workers()`, `below_normal()`) and points the two hard-coded
+`max_workers=6` defaults (`caching.py`, `agents/parallel.py`) at `workers()`. No version
+bump and no consumer bump: the consumers stay on v0.12.0 (operator cut, 2026-10-02).
+
 ## As of 2026-09-16 — crs2-pricing-and-cache-doc-1 shipped
 
 Both defects the 2026-09-15 spec named are fixed on `master`: `88e1ee8` adds the
