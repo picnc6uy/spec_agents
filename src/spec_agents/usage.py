@@ -14,15 +14,27 @@ change caused stale numbers to ship because one copy was missed. Keep the
 
 Update `PRICING_USD_PER_MTOK` when Anthropic changes prices. The canonical
 human-readable source is the operator's memory entry `reference_model_tiers`.
+
+Verification dates differ by row: the pre-5.5 rows were verified 2026-05-30; the
+three 5.5 rows (Opus, Sonnet, Haiku) were read 2026-10-09 (each row says so).
+Not representable by this signature: 1h cache writes, Batch API, fast mode and
+the US data-residency 1.1x multiplier.
+
+The prompt-length threshold is per request: Haiku 5.5 bills every token of a
+request whose prompt exceeds 100,000 tokens at the long-prompt rates
+(:data:`LONG_PROMPT_PRICING_USD_PER_MTOK`). Pass ONE request's tokens to
+:func:`model_cost_usd`; never a sum over several calls.
 """
 
 from __future__ import annotations
 
 from typing import Final
 
-# Per-MTok pricing verified against the live API rate card 2026-05-30
+# Per-MTok pricing. Rows other than the three 5.5 rows were verified against the live
+# API rate card 2026-05-30; the 5.5 rows were read 2026-10-09 (each row cites it)
 # (platform.claude.com/docs/en/about-claude/pricing). Cache multipliers per
-# Anthropic's model: 5m cache_creation = 1.25× input; cache_read = 0.1× input.
+# Anthropic's model: 5m cache_creation = 1.25× input; cache_read = 0.1× input,
+# except where a row says otherwise.
 PRICING_USD_PER_MTOK: Final[dict[str, dict[str, float]]] = {
     "claude-opus-4-8": {
         "input": 5.0,
@@ -74,6 +86,47 @@ PRICING_USD_PER_MTOK: Final[dict[str, dict[str, float]]] = {
         # of Fable's $10 input would be $1.00, overstating the real rate 4x.
         "cache_read": 0.25,
     },
+    "claude-opus-5-5": {
+        # platform.claude.com/docs/en/about-claude/pricing, read 2026-10-09.
+        # cache_read is the published flat $0.20 (0.05x input), NOT 0.1x ($0.40).
+        "input": 4.0,
+        "output": 20.0,
+        "cache_creation": 5.0,
+        "cache_read": 0.20,
+    },
+    "claude-sonnet-5-5": {
+        # platform.claude.com/docs/en/about-claude/pricing, read 2026-10-09.
+        # cache_read is the published flat $0.10 (0.05x input), NOT 0.1x ($0.20).
+        "input": 2.0,
+        "output": 10.0,
+        "cache_creation": 2.50,
+        "cache_read": 0.10,
+    },
+    "claude-haiku-5-5": {
+        # platform.claude.com/docs/en/about-claude/pricing, read 2026-10-09.
+        # Base rates, for a request whose prompt is <= 100,000 tokens; above that
+        # see LONG_PROMPT_PRICING_USD_PER_MTOK.
+        "input": 0.10,
+        "output": 0.50,
+        "cache_creation": 0.125,
+        "cache_read": 0.01,
+    },
+}
+
+# Models priced by prompt length (platform.claude.com/docs/en/about-claude/pricing,
+# read 2026-10-09). A request whose prompt (input + cache creation + cache read
+# tokens; output does not count) is strictly over the threshold is billed at the
+# long rates for ALL of its tokens. Only Haiku 5.5 has a threshold.
+LONG_PROMPT_THRESHOLD_TOKENS: Final[dict[str, int]] = {
+    "claude-haiku-5-5": 100_000,
+}
+LONG_PROMPT_PRICING_USD_PER_MTOK: Final[dict[str, dict[str, float]]] = {
+    "claude-haiku-5-5": {
+        "input": 0.50,
+        "output": 2.50,
+        "cache_creation": 0.625,
+        "cache_read": 0.05,
+    },
 }
 
 
@@ -85,7 +138,10 @@ def model_cost_usd(
     cache_creation_tokens: int = 0,
     cache_read_tokens: int = 0,
 ) -> float:
-    """Return the USD cost of one Anthropic API call.
+    """Return the USD cost of ONE Anthropic API request.
+
+    The token arguments are one request's usage, not a sum over several: models
+    with a prompt-length threshold (Haiku 5.5) are priced per request.
 
     Pure function: ``(input·price_in + output·price_out +
     cache_creation·price_cc + cache_read·price_cr) / 1_000_000``, using the
@@ -97,6 +153,12 @@ def model_cost_usd(
     rather than rely on a silent $0, which hides typos in model names.
     """
     prices = PRICING_USD_PER_MTOK[model]
+    threshold = LONG_PROMPT_THRESHOLD_TOKENS.get(model)
+    if (
+        threshold is not None
+        and input_tokens + cache_creation_tokens + cache_read_tokens > threshold
+    ):
+        prices = LONG_PROMPT_PRICING_USD_PER_MTOK[model]
     return (
         input_tokens * prices["input"]
         + output_tokens * prices["output"]

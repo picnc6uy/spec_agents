@@ -171,12 +171,17 @@ def map_agent(
     output_tokens = sum(r[1] for r in records)
     cache_creation = sum(r[2] for r in records)
     cache_read = sum(r[3] for r in records)
-    cost = model_cost_usd(
-        model,
-        input_tokens,
-        output_tokens,
-        cache_creation_tokens=cache_creation,
-        cache_read_tokens=cache_read,
+    # Priced per call: a model with a prompt-length threshold (Haiku 5.5) bills each
+    # request on its own, so summed tokens would wrongly cross the threshold.
+    cost = sum(
+        model_cost_usd(
+            model,
+            r[0],
+            r[1],
+            cache_creation_tokens=r[2],
+            cache_read_tokens=r[3],
+        )
+        for r in records
     )
     usage_totals = MapUsage(
         calls=len(records),

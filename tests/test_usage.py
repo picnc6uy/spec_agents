@@ -4,7 +4,11 @@ from __future__ import annotations
 
 import pytest
 
-from spec_agents.usage import PRICING_USD_PER_MTOK, model_cost_usd
+from spec_agents.usage import (
+    LONG_PROMPT_PRICING_USD_PER_MTOK,
+    PRICING_USD_PER_MTOK,
+    model_cost_usd,
+)
 
 
 def test_known_model_input_output_cost() -> None:
@@ -113,3 +117,111 @@ def test_pricing_table_has_all_current_tiers() -> None:
     ):
         entry = PRICING_USD_PER_MTOK[model]
         assert {"input", "output", "cache_creation", "cache_read"} <= entry.keys()
+
+
+# ── 5.5 models (sa-prices-55-1) ──────────────────────────────────────────
+
+_MIXED = dict(
+    input_tokens=300_000,
+    output_tokens=70_000,
+    cache_creation_tokens=40_000,
+    cache_read_tokens=500_000,
+)
+
+
+def test_opus_5_5_mixed_call_by_hand() -> None:
+    expected = (300_000 * 4.0 + 70_000 * 20.0 + 40_000 * 5.0 + 500_000 * 0.20) / 1_000_000
+    assert abs(model_cost_usd("claude-opus-5-5", **_MIXED) - expected) < 1e-12
+
+
+def test_sonnet_5_5_mixed_call_by_hand() -> None:
+    expected = (300_000 * 2.0 + 70_000 * 10.0 + 40_000 * 2.50 + 500_000 * 0.10) / 1_000_000
+    assert abs(model_cost_usd("claude-sonnet-5-5", **_MIXED) - expected) < 1e-12
+
+
+def test_haiku_5_5_mixed_call_by_hand() -> None:
+    # prompt 30k + 4k + 50k = 84k <= 100k: base rates.
+    kw = dict(
+        input_tokens=30_000,
+        output_tokens=7_000,
+        cache_creation_tokens=4_000,
+        cache_read_tokens=50_000,
+    )
+    expected = (30_000 * 0.10 + 7_000 * 0.50 + 4_000 * 0.125 + 50_000 * 0.01) / 1_000_000
+    assert abs(model_cost_usd("claude-haiku-5-5", **kw) - expected) < 1e-12
+
+
+def test_5_5_cache_read_is_flat_not_point_one_x_input() -> None:
+    opus = PRICING_USD_PER_MTOK["claude-opus-5-5"]
+    sonnet = PRICING_USD_PER_MTOK["claude-sonnet-5-5"]
+    assert opus["cache_read"] == 0.20 and opus["cache_read"] != 0.1 * opus["input"]
+    assert sonnet["cache_read"] == 0.10 and sonnet["cache_read"] != 0.1 * sonnet["input"]
+    assert model_cost_usd("claude-opus-5-5", 0, 0, cache_read_tokens=1_000_000) == pytest.approx(
+        0.20
+    )
+    assert model_cost_usd("claude-sonnet-5-5", 0, 0, cache_read_tokens=1_000_000) == pytest.approx(
+        0.10
+    )
+
+
+def test_haiku_5_5_threshold_boundary() -> None:
+    base = model_cost_usd("claude-haiku-5-5", 100_000, 0)
+    assert abs(base - 100_000 * 0.10 / 1_000_000) < 1e-12
+    long = model_cost_usd("claude-haiku-5-5", 100_001, 0)
+    assert abs(long - 100_001 * 0.50 / 1_000_000) < 1e-12
+
+
+def test_haiku_5_5_long_prompt_all_token_kinds_at_long_rates() -> None:
+    cost = model_cost_usd(
+        "claude-haiku-5-5", 1_000, 2_000, cache_creation_tokens=3_000, cache_read_tokens=100_000
+    )
+    expected = (1_000 * 0.50 + 2_000 * 2.50 + 3_000 * 0.625 + 100_000 * 0.05) / 1_000_000
+    assert abs(cost - expected) < 1e-12
+
+
+def test_haiku_5_5_cache_reads_count_toward_threshold() -> None:
+    cost = model_cost_usd("claude-haiku-5-5", 10, 0, cache_read_tokens=100_000)
+    assert abs(cost - (10 * 0.50 + 100_000 * 0.05) / 1_000_000) < 1e-12
+
+
+def test_haiku_5_5_output_does_not_count_toward_threshold() -> None:
+    cost = model_cost_usd("claude-haiku-5-5", 50_000, 500_000)
+    assert abs(cost - (50_000 * 0.10 + 500_000 * 0.50) / 1_000_000) < 1e-12
+
+
+@pytest.mark.parametrize("model", ["claude-opus-5-5", "claude-sonnet-5-5"])
+def test_5_5_big_models_have_no_threshold(model: str) -> None:
+    small = model_cost_usd(model, 9_000, 0)
+    big = model_cost_usd(model, 900_000, 0)
+    assert big == pytest.approx(small * 100)
+
+
+def test_pre_existing_rows_unchanged() -> None:
+    expected = {
+        "claude-opus-4-8": (5.0, 25.0, 6.25, 0.50),
+        "claude-opus-4-7": (5.0, 25.0, 6.25, 0.50),
+        "claude-sonnet-4-6": (3.0, 15.0, 3.75, 0.30),
+        "claude-haiku-4-5-20251001": (1.0, 5.0, 1.25, 0.10),
+        "claude-opus-5": (5.0, 25.0, 6.25, 0.50),
+        "claude-sonnet-5": (2.0, 10.0, 2.50, 0.20),
+        "claude-fable-5-1": (10.0, 50.0, 12.50, 0.25),
+    }
+    for model, (i, o, cc, cr) in expected.items():
+        assert PRICING_USD_PER_MTOK[model] == {
+            "input": i,
+            "output": o,
+            "cache_creation": cc,
+            "cache_read": cr,
+        }
+
+
+def test_long_prompt_table_covers_only_haiku_5_5() -> None:
+    assert set(LONG_PROMPT_PRICING_USD_PER_MTOK) == {"claude-haiku-5-5"}
+
+
+@pytest.mark.parametrize(
+    "model", ["gpt-4o", "claude-haiku-5-5-20260101", "claude-opus-5-5-20260101"]
+)
+def test_unknown_or_dated_5_5_id_raises_keyerror(model: str) -> None:
+    with pytest.raises(KeyError):
+        model_cost_usd(model, 1000, 1000)
