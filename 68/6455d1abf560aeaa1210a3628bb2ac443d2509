@@ -1,0 +1,29 @@
+src/spec_agents/usage.py
+  s_95de540ebc47db::t_ef1aac56783715 17-26,33-34,36-37,89-129,141-144,156-161
+tests/test_parallel.py
+  s_95de540ebc47db::t_b7e5d145cd838f 243-260,264-280
+  s_95de540ebc47db::t_6f1461045cb727 261-263
+src/spec_agents/agents/parallel.py
+  s_95de540ebc47db::t_ef1aac56783715 174-184
+tests/test_usage.py
+  s_95de540ebc47db::t_b7e5d145cd838f 7-11,120-218
+  s_95de540ebc47db::t_1922b7ec1c0ad9 219-227
+docs/CURRENT_STATE.md
+  s_95de540ebc47db::t_6f1461045cb727 25-36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "686455d1abf560aeaa1210a3628bb2ac443d2509",
+  "prompts": {},
+  "sessions": {
+    "s_95de540ebc47db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9d6626e8-137e-4226-8ae3-0b3ff021c47e",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
