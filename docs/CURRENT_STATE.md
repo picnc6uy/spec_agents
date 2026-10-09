@@ -22,6 +22,10 @@ The branch line names the last commit that is NOT one of this block's own refres
 generated: 2026-09-16
 <!-- /generated:repo-facts -->
 
+## As of 2026-10-09 - spec drafted for sa-prices-55-1
+
+Spec only, no code yet: .agent/tasks/sa-prices-55-1.md prices claude-opus-5-5, claude-sonnet-5-5 and claude-haiku-5-5 in spec_agents.usage. Master is unchanged at 1c4dfb8 (Merge pull request #1, spec-agents-budget-1); tests 140.
+
 ## As of 2026-10-02 - spec-agents-budget-1 shipped
 
 `spec_agents.budget` is new: `workers(explicit=None)` sizes a fan-out pool (the argument, then
