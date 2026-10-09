@@ -240,6 +240,44 @@ def test_usage_aggregates_across_the_fanout() -> None:
     assert u.churning is False  # no creation → not churning
 
 
+def test_map_agent_haiku_5_5_prices_each_call_at_base_rate_when_sum_is_over_threshold() -> None:
+    # 4 calls x 40k prompt tokens = 160k total, but each call is under 100k: base rates.
+    client = _FakeClient(usage_factory=lambda _u: _usage(inp=10_000, out=500, cr=30_000))
+    result = map_agent(
+        client=client,
+        items=[1, 2, 3, 4],
+        shared_system_text="c",
+        build_user_content=lambda i: str(i),
+        parse=_parse_echo,
+        model="claude-haiku-5-5",
+    )
+    per_call = (10_000 * 0.10 + 500 * 0.50 + 30_000 * 0.01) / 1_000_000
+    assert abs(result.usage.cost_usd - 4 * per_call) < 1e-12
+    assert result.usage.input_tokens == 40_000
+    assert result.usage.cache_read_tokens == 120_000
+
+
+def test_map_agent_haiku_5_5_long_rate_applies_only_to_the_long_call() -> None:
+    def factory(user: str) -> SimpleNamespace:
+        # Only item "1" is over the threshold; the rest are small.
+        if user == "1":
+            return _usage(inp=1_000, out=100, cr=100_000)
+        return _usage(inp=1_000, out=100, cr=0)
+
+    client = _FakeClient(usage_factory=factory)
+    result = map_agent(
+        client=client,
+        items=[1, 2, 3],
+        shared_system_text="c",
+        build_user_content=lambda i: str(i),
+        parse=_parse_echo,
+        model="claude-haiku-5-5",
+    )
+    long_call = (1_000 * 0.50 + 100 * 2.50 + 100_000 * 0.05) / 1_000_000
+    small_call = (1_000 * 0.10 + 100 * 0.50) / 1_000_000
+    assert abs(result.usage.cost_usd - (long_call + 2 * small_call)) < 1e-12
+
+
 def test_churning_flag_set_when_creation_dwarfs_reads() -> None:
     # Each call re-creates the prefix (cc) and barely reads — the storm signature.
     client = _FakeClient(usage_factory=lambda _u: _usage(inp=10, out=5, cc=130_000, cr=0))

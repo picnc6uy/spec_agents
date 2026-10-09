@@ -16,6 +16,7 @@ churn if the cache isn't being reused).
 
 from __future__ import annotations
 
+import math
 import threading
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
@@ -121,7 +122,8 @@ def map_agent(
 
     Returns:
         :class:`MapResult` — ``results`` in item order + a :class:`MapUsage` rollup
-        (totals, ``cost_usd`` via :func:`spec_agents.usage.model_cost_usd`, and a
+        (totals, ``cost_usd`` as the sum of per-call :func:`spec_agents.usage.model_cost_usd`
+        values -- do not re-price the totals, which is wrong for Haiku 5.5's per-request threshold -- and a
         ``churning`` flag via :func:`spec_agents.caching.is_cache_churning`).
 
     Raises:
@@ -171,12 +173,17 @@ def map_agent(
     output_tokens = sum(r[1] for r in records)
     cache_creation = sum(r[2] for r in records)
     cache_read = sum(r[3] for r in records)
-    cost = model_cost_usd(
-        model,
-        input_tokens,
-        output_tokens,
-        cache_creation_tokens=cache_creation,
-        cache_read_tokens=cache_read,
+    # Priced per call: a model with a prompt-length threshold (Haiku 5.5) bills each
+    # request on its own, so summed tokens would wrongly cross the threshold.
+    cost = math.fsum(
+        model_cost_usd(
+            model,
+            r[0],
+            r[1],
+            cache_creation_tokens=r[2],
+            cache_read_tokens=r[3],
+        )
+        for r in records
     )
     usage_totals = MapUsage(
         calls=len(records),

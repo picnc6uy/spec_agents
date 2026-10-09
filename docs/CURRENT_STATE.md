@@ -22,6 +22,17 @@ The branch line names the last commit that is NOT one of this block's own refres
 generated: 2026-09-16
 <!-- /generated:repo-facts -->
 
+## As of 2026-10-09 - sa-prices-55-1 implemented
+
+`PRICING_USD_PER_MTOK` now prices `claude-opus-5-5` ($4/$20, cache write 5.00, read 0.20),
+`claude-sonnet-5-5` ($2/$10, write 2.50, read 0.10) and `claude-haiku-5-5` ($0.10/$0.50,
+write 0.125, read 0.01), read from the pricing page 2026-10-09. Opus/Sonnet 5.5 cache reads
+are the flat 0.05x figures, not 0.1x. Haiku 5.5 is priced per request: a prompt
+(input + cache creation + cache read) over 100,000 tokens is billed at
+`LONG_PROMPT_PRICING_USD_PER_MTOK` for all its tokens. `model_cost_usd` takes ONE request's
+tokens; `map_agent` now sums per-call costs. Unknown ids (incl. dated 5.5 ids) still raise
+KeyError; `DEFAULT_PARALLEL_MODEL` is unchanged.
+
 ## As of 2026-10-02 - spec-agents-budget-1 shipped
 
 `spec_agents.budget` is new: `workers(explicit=None)` sizes a fan-out pool (the argument, then
