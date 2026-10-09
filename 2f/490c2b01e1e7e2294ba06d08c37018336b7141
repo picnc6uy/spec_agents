@@ -1,0 +1,23 @@
+src/spec_agents/agents/parallel.py
+  s_95de540ebc47db::t_ff12d3b167ccdf 19,125-126,178
+tests/test_usage.py
+  s_95de540ebc47db::t_ff12d3b167ccdf 9,229-246
+.agent/verifications/sa-prices-55-1.md
+  s_95de540ebc47db::t_06561be2e89dce 1-64
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "2f490c2b01e1e7e2294ba06d08c37018336b7141",
+  "prompts": {},
+  "sessions": {
+    "s_95de540ebc47db": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "9d6626e8-137e-4226-8ae3-0b3ff021c47e",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Glenn Hendrick <hendrick.glenn@gmail.com>"
+    }
+  }
+}
