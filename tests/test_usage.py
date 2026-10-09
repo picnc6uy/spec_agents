@@ -6,6 +6,7 @@ import pytest
 
 from spec_agents.usage import (
     LONG_PROMPT_PRICING_USD_PER_MTOK,
+    LONG_PROMPT_THRESHOLD_TOKENS,
     PRICING_USD_PER_MTOK,
     model_cost_usd,
 )
@@ -225,3 +226,21 @@ def test_long_prompt_table_covers_only_haiku_5_5() -> None:
 def test_unknown_or_dated_5_5_id_raises_keyerror(model: str) -> None:
     with pytest.raises(KeyError):
         model_cost_usd(model, 1000, 1000)
+
+
+def test_haiku_5_5_cache_creation_counts_toward_threshold() -> None:
+    cost = model_cost_usd("claude-haiku-5-5", 10, 0, cache_creation_tokens=100_000)
+    assert abs(cost - (10 * 0.50 + 100_000 * 0.625) / 1_000_000) < 1e-12
+
+
+def test_new_rows_and_long_rows_have_all_four_keys() -> None:
+    keys = {"input", "output", "cache_creation", "cache_read"}
+    for model in ("claude-opus-5-5", "claude-sonnet-5-5", "claude-haiku-5-5"):
+        assert PRICING_USD_PER_MTOK[model].keys() == keys
+    for row in LONG_PROMPT_PRICING_USD_PER_MTOK.values():
+        assert row.keys() == keys
+
+
+def test_threshold_and_long_tables_have_same_models() -> None:
+    assert LONG_PROMPT_THRESHOLD_TOKENS.keys() == LONG_PROMPT_PRICING_USD_PER_MTOK.keys()
+    assert LONG_PROMPT_THRESHOLD_TOKENS.keys() <= PRICING_USD_PER_MTOK.keys()
