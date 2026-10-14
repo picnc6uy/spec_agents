@@ -10,13 +10,13 @@ agent: claude-code
 Interpreter: `C:\Users\ghendrick\AppData\Local\Programs\Python\Python312\python.exe` (3.12), Python312 and Scripts first on PATH. No SKIP=.
 
 ## Automated checks
-- [x] `pytest -q` -- 194 passed.
+- [x] `pytest -q` -- 195 passed.
 - [x] `ruff check .` and `ruff format --check .` -- clean.
 - [x] `pyright` -- 0 errors, 0 warnings.
 - [x] `pre-commit run --all-files` in this repo -- passes.
 
 ## Acceptance criteria
-- [x] P1 -- `tests/test_new_repo.py::test_generated_repo_passes_its_own_gates_on_first_commit` generates into tmp_path, then runs the new repo's `pre-commit run --all-files` (all 12 hooks pass) and `python -m pytest -q` (1 passed). Same by hand into the scratchpad `tmpl-check/tmpl-demo`.
+- [x] P1 -- `tests/test_new_repo.py::test_generated_repo_passes_its_own_gates_on_first_commit` generates into tmp_path, then runs the new repo's `pre-commit run --all-files` (all 12 hooks pass) , `python -m pytest -q` (1 passed), `ruff check`, `ruff format --check` and `pyright` (all clean); generation itself runs `pre-commit install` + `run --all-files` before the first commit, builds in a temp dir renamed at the end, and refuses bad names, existing targets and unreplaced tokens (exit 2). Same by hand into the scratchpad `tmpl-check/tmpl-demo`.
 - [x] P2 -- the same test compares the three scripts to `planning/agent-task/scripts` (CRLF folded to LF, as planning's conformance check compares them).
 - [x] P3 -- generator imports stdlib only; it runs `git init/add/commit` and the Forge installer; no remote, no network.
 
