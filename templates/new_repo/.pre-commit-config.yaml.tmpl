@@ -1,0 +1,55 @@
+# Pre-commit hooks, in the stack's shape (copied from spec_agents).
+#
+# First-time install (once per clone):
+#   pip install pre-commit
+#   pre-commit install
+#
+# Run on all files manually:
+#   pre-commit run --all-files
+
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.6
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: detect-private-key
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+
+  # agent-task discipline: require .agent/tasks/<id>.md on agent/<id> branches.
+  # Source of truth: planning/agent-task/scripts/check_agent_task_spec.sh
+  - repo: local
+    hooks:
+      - id: agent-task-spec
+        name: agent-task discipline (spec required on agent/* branches)
+        entry: bash scripts/check_agent_task_spec.sh
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      # drift-audit: fail commit if docs/CURRENT_STATE.md '## As of' line is
+      # stale (>3 days) and the repo has commits since that date.
+      # Source of truth: planning/agent-task/scripts/check_current_state_drift.py
+      - id: drift-audit
+        name: drift-audit (CURRENT_STATE.md staleness check)
+        entry: python scripts/check_current_state_drift.py
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]

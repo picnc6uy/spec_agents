@@ -1,0 +1,10 @@
+# `.agent` - repo-local agent task contracts
+
+- `tasks/<id>.md` - the task spec (scaffold from `task-template.md`).
+- `verifications/<id>.md` - the evidence doc (from `verification-template.md`, or
+  `-light` for small work), written before a task is declared done.
+- `lenses/` - the review lenses a spec's `lens:` field names.
+
+The canonical copies of the templates and lenses live in
+`planning/agent-task/agent-templates/`; the stack conformance check compares these
+against them. The dev-loop contract is `planning/agent-task/README.md`.

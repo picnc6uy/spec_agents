@@ -57,3 +57,6 @@ ignore = ["E501"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "slow: builds a throwaway repo and runs its pre-commit hooks (several seconds to minutes).",
+]

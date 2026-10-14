@@ -22,6 +22,23 @@ The branch line names the last commit that is NOT one of this block's own refres
 generated: 2026-09-16
 <!-- /generated:repo-facts -->
 
+## As of 2026-10-14 - kit-template-1 implemented
+
+`scripts/new_repo.py NAME --dest DIR` (stdlib only) writes DIR/NAME as a new stack repo and makes
+its first commit on `main`: `src/<pkg>/` with one module, one test, pyproject (ruff 0.16.6 and
+pyright 1.1.411 pinned, spec-agents pinned to the newest `v*` tag of this repo, `pythonpath =
+["src"]`, ruff `extend-exclude = [".claude"]`), the stack's `.pre-commit-config.yaml`, AGENTS.md +
+CLAUDE.md stub + `docs/`, CI workflow, `.secrets.baseline`, `.gitattributes`, and the `.agent/`
+scaffold. Our files live in `templates/new_repo/*.tmpl`. The drift scripts, verification/task
+templates, lenses and the AGENTS.md reading-order block are NOT duplicated here: the generator
+copies them from `planning/agent-task/` (CRLF folded to LF) so planning stays the one authority.
+Then `git init -b main`, the Forge v2 kit install (`~/forge-v2/kit/install.py`), commit. No
+remote, no network. Property test: `tests/test_new_repo.py::test_generated_repo_passes_its_own_gates_on_first_commit`
+(marker `slow`, skips when git/pre-commit/planning/forge-v2 are absent). Still red for a new repo in
+planning's conformance matrix: `repo-facts` (the daily job writes it) and `backed up` (no remote),
+and the repo is not in `CANONICAL_REPOS` until an operator adds it. Verification:
+`.agent/verifications/kit-template-1.md`.
+
 ## As of 2026-10-09 - sa-prices-55-1 implemented
 
 `PRICING_USD_PER_MTOK` now prices `claude-opus-5-5` ($4/$20, cache write 5.00, read 0.20),
