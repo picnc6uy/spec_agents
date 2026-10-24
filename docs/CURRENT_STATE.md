@@ -13,13 +13,13 @@ The branch line names the last commit that is NOT one of this block's own refres
 — what last shipped, not when the job ran; `git log -1` is authoritative.
 `generated:` marks when these facts last CHANGED, not when the job ran._
 
-- **branch** `master` @ `f884910` docs: crs2-pricing-and-cache-doc-1 shipped; retire the st... · 2026-09-16
-- **tests** 140 (static `def test_` count)
+- **branch** `master` @ `c54a3d2` fix(template): review fixes for new_repo.py (kit-template-1) · 2026-10-14
+- **tests** 183 (static `def test_` count)
 - **pins** ruff 0.16.6 · pyright 1.1.411 · spec_agents: not a consumer
 - **scaffold** .agent/ ok (tasks, verifications, lenses, both templates)
 - **agent/\*** none
 
-generated: 2026-09-16
+generated: 2026-10-24
 <!-- /generated:repo-facts -->
 
 ## As of 2026-10-14 - kit-template-1 implemented
