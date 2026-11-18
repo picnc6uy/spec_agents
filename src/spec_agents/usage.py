@@ -16,7 +16,8 @@ Update `PRICING_USD_PER_MTOK` when Anthropic changes prices. The canonical
 human-readable source is the operator's memory entry `reference_model_tiers`.
 
 Verification dates differ by row: the pre-5.5 rows were verified 2026-05-30; the
-three 5.5 rows (Opus, Sonnet, Haiku) were read 2026-10-09 (each row says so).
+three 5.5 rows (Opus, Sonnet, Haiku) were read 2026-10-09; the Fable 5.2 row was
+read 2026-11-17 (each row says so).
 Not representable by this signature: 1h cache writes, Batch API, fast mode and
 the US data-residency 1.1x multiplier.
 
@@ -85,6 +86,15 @@ PRICING_USD_PER_MTOK: Final[dict[str, dict[str, float]]] = {
         # flat rate, NOT the module's stated 0.1x-input rule (line 25) — 0.1x
         # of Fable's $10 input would be $1.00, overstating the real rate 4x.
         "cache_read": 0.25,
+    },
+    "claude-fable-5-2": {
+        # platform.claude.com/docs/en/about-claude/pricing, read 2026-11-17.
+        # Successor to Fable 5.1 at a LOWER price. cache_read is the published
+        # flat $0.20 (0.025x input), NOT 0.1x ($0.80).
+        "input": 8.0,
+        "output": 40.0,
+        "cache_creation": 10.0,
+        "cache_read": 0.20,
     },
     "claude-opus-5-5": {
         # platform.claude.com/docs/en/about-claude/pricing, read 2026-10-09.

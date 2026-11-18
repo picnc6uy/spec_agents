@@ -98,6 +98,29 @@ def test_fable_5_1_cache_read_is_flat_not_point_one_x_input() -> None:
     assert cost != pytest.approx(1.00)
 
 
+def test_fable_5_2_mixed_call_by_hand() -> None:
+    kw = dict(
+        input_tokens=300_000,
+        output_tokens=70_000,
+        cache_creation_tokens=40_000,
+        cache_read_tokens=500_000,
+    )
+    expected = (300_000 * 8.0 + 70_000 * 40.0 + 40_000 * 10.0 + 500_000 * 0.20) / 1_000_000
+    assert abs(model_cost_usd("claude-fable-5-2", **kw) - expected) < 1e-12
+
+
+def test_fable_5_2_cache_read_is_flat_not_point_one_x_input() -> None:
+    row = PRICING_USD_PER_MTOK["claude-fable-5-2"]
+    assert row["cache_read"] == 0.20 and row["cache_read"] != 0.1 * row["input"]
+
+
+def test_fable_5_2_is_cheaper_than_fable_5_1() -> None:
+    # The newer model is cheaper on every token kind; guards a "newer is pricier" edit.
+    new = PRICING_USD_PER_MTOK["claude-fable-5-2"]
+    old = PRICING_USD_PER_MTOK["claude-fable-5-1"]
+    assert all(new[k] < old[k] for k in old)
+
+
 def test_sonnet_5_is_cheaper_than_sonnet_4_6() -> None:
     kwargs = dict(
         input_tokens=1_000_000,

@@ -22,6 +22,14 @@ The branch line names the last commit that is NOT one of this block's own refres
 generated: 2026-10-24
 <!-- /generated:repo-facts -->
 
+## As of 2026-11-17 - claude-fable-5-2 priced
+
+`PRICING_USD_PER_MTOK` gains `claude-fable-5-2` ($8/$40, cache write 10.00, read 0.20 flat; pricing
+page read 2026-11-17), the successor to Fable 5.1 at a lower price. Before this, `model_cost_usd`
+raised `KeyError` for it. Three new tests in `tests/test_usage.py` (186 static). A new planning
+check, `scripts/check_model_freshness.py`, now compares this table against the bundled model list
+and the pricing page, so the next model launch is flagged instead of found by hand.
+
 ## As of 2026-10-14 - kit-template-1 implemented
 
 `scripts/new_repo.py NAME --dest DIR` (stdlib only) writes DIR/NAME as a new stack repo and makes
